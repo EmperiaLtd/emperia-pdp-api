@@ -6,7 +6,8 @@ from mangum import Mangum
 #                          market_product, product, salesforce, space, submit,
 #                          subscription, virtual_experience)
 
-app = FastAPI()#(title="Emperia-PDP-API",
+app = FastAPI(title="Emperia-PDP-API",
+              root_path="/")#(title="Emperia-PDP-API",
 #               root_path="/{}".format(settings.stage_name))
 
 # app.include_router(product.router, tags=["product"], prefix="/api/product")
