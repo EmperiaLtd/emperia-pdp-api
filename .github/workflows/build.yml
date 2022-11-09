@@ -21,12 +21,12 @@ jobs:
       - name: run linter [flake8]
         run: flake8 .
 
-      - name: run unit tests [pytest]
-        env:
-          ENV_AWS_ACCESS_KEY_ID: ${{ secrets.ENV_AWS_ACCESS_KEY }}
-          ENV_AWS_SECRET_ACCESS_KEY: ${{ secrets.ENV_AWS_SECRET_ACCESS_KEY }}
+      # - name: run unit tests [pytest]
+      #   env:
+      #     ENV_AWS_ACCESS_KEY_ID: ${{ secrets.ENV_AWS_ACCESS_KEY }}
+      #     ENV_AWS_SECRET_ACCESS_KEY: ${{ secrets.ENV_AWS_SECRET_ACCESS_KEY }}
           
-        run: pytest
+      #   run: pytest
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
