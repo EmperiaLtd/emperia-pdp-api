@@ -7,7 +7,7 @@ provider "aws" {
 # s3 bucket for terraform state
 
 resource "aws_s3_bucket" "tf_remote_state" {
-  bucket = "terraform-state-Emperia-PDP"
+  bucket = "terraform-state-emperia-pdp"
 
   versioning {
     enabled = true

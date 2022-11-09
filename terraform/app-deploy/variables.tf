@@ -19,11 +19,11 @@ variable "app_version" {
 }
 
 variable "s3_bucket_name" {
-  default = "exhibitionbuilder"
+  default = "terraform-state-emperia-pdp"
 }
 
 variable "backend_remote_state_s3_bucket" {
-  default = "terraform-state-Emperia-PDP"
+  default = "terraform-state-emperia-pdp"
 }
 
 variable "backend_state_locking_dynamoDB" {

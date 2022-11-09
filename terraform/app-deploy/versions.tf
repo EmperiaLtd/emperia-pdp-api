@@ -13,7 +13,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "sftpgw-i-06e8a0b5d0a44b1fb"
+    bucket         = "terraform-state-emperia-pdp"
     key            = "terra-backend/terraform.tfstate"
     encrypt        = true
     region         = "eu-west-2"
