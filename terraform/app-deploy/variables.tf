@@ -26,6 +26,3 @@ variable "backend_remote_state_s3_bucket" {
   default = "terraform-state-emperia-pdp"
 }
 
-variable "backend_state_locking_dynamoDB" {
-  default = "terraform-state-locking-Emperia-PDP"
-}

@@ -17,6 +17,5 @@ terraform {
     key            = "terra-backend/terraform.tfstate"
     encrypt        = true
     region         = "eu-west-2"
-    dynamodb_table = "terraform-state-locking-Emperia-PDP"
   }
 }
