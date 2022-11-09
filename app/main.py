@@ -35,4 +35,4 @@ async def read_root():
         "status_code": 200,
         "message": "Hello World"}
 
-# handler = Mangum(app, api_gateway_base_path="/{}".format(settings.stage_name))
+handler = Mangum(app, api_gateway_base_path="/".format(settings.stage_name))
