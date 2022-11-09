@@ -19,7 +19,7 @@ variable "app_version" {
 }
 
 variable "s3_bucket_name" {
-  default = "sftpgw-i-06e8a0b5d0a44b1fb"
+  default = "exhibitionbuilder"
 }
 
 variable "backend_remote_state_s3_bucket" {
