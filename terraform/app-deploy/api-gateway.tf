@@ -13,17 +13,17 @@ resource "aws_apigatewayv2_api" "Emperia-PDP-gateway" {
 }
 
 
-resource "aws_apigatewayv2_authorizer" "Emperia-PDP-gateway" {
-  api_id           = aws_apigatewayv2_api.Emperia-PDP-gateway.id
-  authorizer_type  = "JWT"
-  identity_sources = ["$request.header.Authorization"]
-  name             = "Emperia-PDP-authorizer-${local.stage}"
+#resource "aws_apigatewayv2_authorizer" "Emperia-PDP-gateway" {
+#  api_id           = aws_apigatewayv2_api.Emperia-PDP-gateway.id
+#  authorizer_type  = "JWT"
+#  identity_sources = ["$request.header.Authorization"]
+#  name             = "Emperia-PDP-authorizer-${local.stage}"
 
-  jwt_configuration {
-    audience = [local.authorization_audience]
-    issuer   = local.authorization_issuer
-  }
-}
+#  jwt_configuration {
+#    audience = [local.authorization_audience]
+#    issuer   = local.authorization_issuer
+#  }
+#}
 
 resource "aws_apigatewayv2_integration" "Emperia-PDP-integration" {
   api_id           = aws_apigatewayv2_api.Emperia-PDP-gateway.id
@@ -33,38 +33,6 @@ resource "aws_apigatewayv2_integration" "Emperia-PDP-integration" {
   integration_method     = "POST"
   integration_uri        = aws_lambda_function.Emperia-PDP-lambda-function.invoke_arn
   payload_format_version = "2.0"
-}
-
-resource "aws_apigatewayv2_route" "Emperia-PDP-api-get-route" {
-  api_id             = aws_apigatewayv2_api.Emperia-PDP-gateway.id
-  route_key          = "GET /api/{proxy+}"
-  authorization_type = "JWT"
-  authorizer_id      = aws_apigatewayv2_authorizer.Emperia-PDP-gateway.id
-  target             = "integrations/${aws_apigatewayv2_integration.Emperia-PDP-integration.id}"
-}
-
-resource "aws_apigatewayv2_route" "Emperia-PDP-api-put-route" {
-  api_id             = aws_apigatewayv2_api.Emperia-PDP-gateway.id
-  route_key          = "PUT /api/{proxy+}"
-  authorization_type = "JWT"
-  authorizer_id      = aws_apigatewayv2_authorizer.Emperia-PDP-gateway.id
-  target             = "integrations/${aws_apigatewayv2_integration.Emperia-PDP-integration.id}"
-}
-
-resource "aws_apigatewayv2_route" "Emperia-PDP-api-delete-route" {
-  api_id             = aws_apigatewayv2_api.Emperia-PDP-gateway.id
-  route_key          = "DELETE /api/{proxy+}"
-  authorization_type = "JWT"
-  authorizer_id      = aws_apigatewayv2_authorizer.Emperia-PDP-gateway.id
-  target             = "integrations/${aws_apigatewayv2_integration.Emperia-PDP-integration.id}"
-}
-
-resource "aws_apigatewayv2_route" "Emperia-PDP-api-post-route" {
-  api_id             = aws_apigatewayv2_api.Emperia-PDP-gateway.id
-  route_key          = "POST /api/{proxy+}"
-  authorization_type = "JWT"
-  authorizer_id      = aws_apigatewayv2_authorizer.Emperia-PDP-gateway.id
-  target             = "integrations/${aws_apigatewayv2_integration.Emperia-PDP-integration.id}"
 }
 
 resource "aws_apigatewayv2_route" "Emperia-PDP-docs-route" {

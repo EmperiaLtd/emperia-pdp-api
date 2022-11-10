@@ -6,6 +6,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 locals {
+  stage               = "dev"     
   prefix              = "Emperia-PDP"
   root_dir            = "../.."
   app_dir             = "${local.root_dir}/app"
@@ -26,8 +27,8 @@ resource "aws_ecr_repository" "repo" {
 
 resource "null_resource" "ecr_image" {
   triggers = {
-    dir_md5     = md5(join("", [for f in fileset("${local.app_dir}", "**") : file("${local.app_dir}/${f}")]))
-    docker_file = md5(file("${path.module}/${local.root_dir}/Dockerfile.aws.lambda"))
+    dir_md5     = md5(join("", [for f in fileset("${local.app_dir}", "**") : filebase64("${local.app_dir}/${f}")]))
+    docker_file = md5(filebase64("${path.module}/${local.root_dir}/Dockerfile.aws.lambda"))
   }
 
   # The local-exec provisioner invokes a local executable after a resource is created.
