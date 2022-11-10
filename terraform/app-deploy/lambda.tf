@@ -60,11 +60,11 @@ resource "aws_iam_role" "lambda" {
         "Version": "2012-10-17",
         "Statement": [
             {
-                "Effect": "Allow",
+                "Action": "sts:AssumeRole",
                 "Principal": {
                     "Service": "lambda.amazonaws.com"
                 },
-                "Action": "sts:AssumeRole"
+                "Effect": "Allow",
             }
         ]
 }
