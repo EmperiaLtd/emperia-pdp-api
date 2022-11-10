@@ -64,7 +64,7 @@ resource "aws_iam_role" "lambda" {
                 "Principal": {
                     "Service": "lambda.amazonaws.com"
                 },
-                "Effect": "Allow",
+                "Effect": "Allow"
             }
         ]
 }
