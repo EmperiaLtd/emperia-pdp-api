@@ -7,7 +7,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
   stage               = "dev"     
-  prefix              = "Emperia-PDP"
+  prefix              = "emperia-pdp"
   root_dir            = "../.."
   app_dir             = "${local.root_dir}/app"
   account_id          = data.aws_caller_identity.current.account_id
