@@ -20,7 +20,7 @@ resource "aws_ecr_repository" "repo" {
 }
 
 # The null_resource resource implements the standard resource lifecycle
-# but takes no further action.
+
 
 # The triggers argument allows specifying an arbitary set of values that,
 # when changed, will cause the resource to be replaced.
