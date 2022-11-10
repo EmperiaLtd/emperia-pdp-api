@@ -53,23 +53,23 @@ data "aws_ecr_image" "lambda_image" {
   image_tag       = local.ecr_image_tag
 }
 
-# resource "aws_iam_role" "lambda" {
-#   name               = "${local.prefix}-lambda-role-${local.stage}"
-#   assume_role_policy = <<EOF
-# {
-#         "Version": "2012-10-17",
-#         "Statement": [
-#             {
-#                 "Action": "sts:AssumeRole",
-#                 "Principal": {
-#                     "Service": "lambda.amazonaws.com"
-#                 },
-#                 "Effect": "Allow"
-#             }
-#         ]
-# }
-#     EOF
-# }
+resource "aws_iam_role" "lambda" {
+  name               = "${local.prefix}-lambda-role-${local.stage}"
+  assume_role_policy = <<EOF
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": "sts:AssumeRole",
+                "Principal": {
+                    "Service": "lambda.amazonaws.com"
+                },
+                "Effect": "Allow"
+            }
+        ]
+}
+    EOF
+}
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.lambda.name
