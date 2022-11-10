@@ -31,7 +31,7 @@ resource "null_resource" "ecr_image" {
     docker_file = md5(filebase64("${path.module}/${local.root_dir}/Dockerfile.aws.lambda"))
   }
 
-  # The local-exec provisioner invokes a local executable after a resource is created .
+  # The local-exec provisioner invokes a local executable after a resource is created.
   # This invokes a process on the machine running Terraform, not on the resource.
   # path.module: the filesystem path of the module where the expression is placed.
 
