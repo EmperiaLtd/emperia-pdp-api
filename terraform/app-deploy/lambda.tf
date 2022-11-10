@@ -116,7 +116,7 @@ resource "aws_iam_policy" "lambda" {
   policy = data.aws_iam_policy_document.lambda.json
 }
 
-resource "aws_lambda_function" "Emperia-PDP-lambda-function" {
+resource "aws_lambda_function" "emperia-pdp-lambda-function" {
   depends_on = [
     null_resource.ecr_image
   ]
@@ -136,8 +136,8 @@ resource "aws_lambda_function" "Emperia-PDP-lambda-function" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "Emperia-PDP" {
-  name = "/aws/lambda/${aws_lambda_function.Emperia-PDP-lambda-function.function_name}"
+resource "aws_cloudwatch_log_group" "emperia-pdp" {
+  name = "/aws/lambda/${aws_lambda_function.emperia-pdp-lambda-function.function_name}"
 
   retention_in_days = 30
 }
@@ -145,10 +145,10 @@ resource "aws_cloudwatch_log_group" "Emperia-PDP" {
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.Emperia-PDP-lambda-function.arn
+  function_name = aws_lambda_function.emperia-pdp-lambda-function.arn
   principal     = "apigateway.amazonaws.com"
 
   # The "/*/*" portion grants access from any method on any resource
   # within the API Gateway REST API
-  source_arn = "${aws_apigatewayv2_api.Emperia-PDP-gateway.execution_arn}/*/*"
+  source_arn = "${aws_apigatewayv2_api.emperia-pdp-gateway.execution_arn}/*/*"
 }

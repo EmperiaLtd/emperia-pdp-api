@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from mangum import Mangum
 
 
-app = FastAPI(title="Emperia-PDP-API",
+app = FastAPI(title="emperia-pdp-API",
               root_path="/")
 
 

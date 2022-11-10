@@ -1,9 +1,9 @@
 output "lambda_name" {
-  value = aws_lambda_function.Emperia-PDP-lambda-function.id
+  value = aws_lambda_function.emperia-pdp-lambda-function.id
 }
 
 #output "base_url" {
-#  value = "${aws_apigatewayv2_stage.Emperia-PDP-gateway.invoke_url}/"
+#  value = "${aws_apigatewayv2_stage.emperia-pdp-gateway.invoke_url}/"
 #}
 
 output "env_aws_access_key" {

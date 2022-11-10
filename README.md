@@ -1,4 +1,4 @@
-# Emperia-PDP-api
+# emperia-pdp-api
 
 The backend REST API for apollo artemis product lines
 
