@@ -22,7 +22,7 @@ resource "aws_ecr_repository" "repo" {
 # The null_resource resource implements the standard resource lifecycle
 
 
-# The triggers argument allows specifying an arbitary set of values that,
+# The triggers argument allows specifying an arbitary set of values that ,
 # when changed, will cause the resource to be replaced.
 
 resource "null_resource" "ecr_image" {
@@ -57,19 +57,16 @@ resource "aws_iam_role" "lambda" {
   name               = "${local.prefix}-lambda-role-${local.stage}"
   assume_role_policy = <<EOF
 {
-   "Version": "2012-10-17",
-   "Statement": [
-      {
-         "Effect": "Allow",
-         "Principal": {
-            "Service": [
-               "lambda.amazonaws.com",
-               "edgelambda.amazonaws.com"
-            ]
-         },
-         "Action": "sts:AssumeRole"
-      }
-   ]
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": "sts:AssumeRole",
+                "Principal": {
+                    "Service": "lambda.amazonaws.com"
+                },
+                "Effect": "Allow"
+            }
+        ]
 }
     EOF
 }
