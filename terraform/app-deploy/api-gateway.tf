@@ -12,7 +12,16 @@ resource "aws_apigatewayv2_api" "emperia-pdp-gateway" {
   }
 }
 
+resource "aws_apigatewayv2_stage" "emperia-pdp-gateway" {
+  api_id      = aws_apigatewayv2_api.emperia-pdp-gateway.id
+  name        = local.stage
+  auto_deploy = true
 
+  default_route_settings {
+    throttling_burst_limit = 5000
+    throttling_rate_limit  = 10000
+  }
+}
 #resource  "aws_apigatewayv2_authorizer" "emperia-pdp-gateway" {
 #  api_id           = aws_apigatewayv2_api.emperia-pdp-gateway.id
 #  authorizer_type  = "JWT"
