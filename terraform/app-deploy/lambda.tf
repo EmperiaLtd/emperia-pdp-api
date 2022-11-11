@@ -5,8 +5,7 @@ provider "aws" {
 
 data "aws_caller_identity" "current" {}
 
-locals {
-  stage               = "dev"     
+locals {    
   prefix              = "emperia-pdp"
   root_dir            = "../.."
   app_dir             = "${local.root_dir}/app"
