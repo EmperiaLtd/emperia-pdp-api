@@ -60,14 +60,14 @@ resource "aws_iam_role" "lambda" {
         "Version": "2012-10-17",
         "Statement": [
             {
-                "Effect": "Allow",  
+                "Effect": "Allow"
                 "Principal": {
-                    "Service": "lambda.amazonaws.com"
-                },    
-                "Action": [
-                    "iam:CreateRole"
-                ],
-                "Resource": "arn:aws:iam::601772211076:role/emperia-pdp-lambda-role-dev"
+                   "Service": [
+                      "lambda.amazonaws.com",
+                      "edgelambda.amazonaws.com"
+                   ]    
+                },
+                "Action": "sts:AssumeRole"
             }
         ]
 }
