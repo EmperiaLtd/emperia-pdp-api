@@ -22,7 +22,7 @@ resource "aws_apigatewayv2_stage" "emperia-pdp-gateway" {
     throttling_rate_limit  = 10000
   }
 }
-resource  "aws_apigatewayv2_authorizer" "emperia-pdp-gateway" {
+resource "aws_apigatewayv2_authorizer" "emperia-pdp-gateway" {
  api_id           = aws_apigatewayv2_api.emperia-pdp-gateway.id
  authorizer_type  = "JWT"
  identity_sources = ["$request.header.Authorization"]
