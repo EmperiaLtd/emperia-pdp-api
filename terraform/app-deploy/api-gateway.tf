@@ -22,17 +22,17 @@ resource "aws_apigatewayv2_stage" "emperia-pdp-gateway" {
     throttling_rate_limit  = 10000
   }
 }
-#resource  "aws_apigatewayv2_authorizer" "emperia-pdp-gateway" {
-#  api_id           = aws_apigatewayv2_api.emperia-pdp-gateway.id
-#  authorizer_type  = "JWT"
-#  identity_sources = ["$request.header.Authorization"]
-#  name             = "emperia-pdp-authorizer-${local.stage}"
+resource  "aws_apigatewayv2_authorizer" "emperia-pdp-gateway" {
+ api_id           = aws_apigatewayv2_api.emperia-pdp-gateway.id
+ authorizer_type  = "JWT"
+ identity_sources = ["$request.header.Authorization"]
+ name             = "emperia-pdp-authorizer-${local.stage}"
 
-#  jwt_configuration {
-#    audience = [local.authorization_audience]
-#    issuer   = local.authorization_issuer
-#  }
-#}
+ jwt_configuration {
+   audience = [local.authorization_audience]
+   issuer   = local.authorization_issuer
+ }
+}
 
 resource "aws_apigatewayv2_integration" "emperia-pdp-integration" {
   api_id           = aws_apigatewayv2_api.emperia-pdp-gateway.id
@@ -42,6 +42,13 @@ resource "aws_apigatewayv2_integration" "emperia-pdp-integration" {
   integration_method     = "POST"
   integration_uri        = aws_lambda_function.emperia-pdp-lambda-function.invoke_arn
   payload_format_version = "2.0"
+}
+resource "aws_apigatewayv2_route" "emperia-pdp-api-get-route" {
+  api_id             = aws_apigatewayv2_api.emperia-pdp-gateway.id
+  route_key          = "GET /api/{proxy+}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.apollo-artemis-gateway.id
+  target             = "integrations/${aws_apigatewayv2_integration.apollo-artemis-integration.id}"
 }
 
 resource "aws_apigatewayv2_route" "emperia-pdp-docs-route" {
