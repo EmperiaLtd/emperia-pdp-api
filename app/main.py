@@ -3,7 +3,7 @@ from mangum import Mangum
 from app.config import settings
 
 app = FastAPI(title="emperia-pdp-API",
-              root_path="/")
+              root_path="/".format(settings.stage_name))
 
 
 @app.get("/")
