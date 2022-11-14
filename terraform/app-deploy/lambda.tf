@@ -148,6 +148,6 @@ resource "aws_lambda_permission" "apigw" {
   principal     = "apigateway.amazonaws.com"
 
   # The "/*/*" portion grants access from any method on any resource
-  # within the API Gateway REST API
+  # within the API Gateway REST API.
   source_arn = "${aws_apigatewayv2_api.emperia-pdp-gateway.execution_arn}/*/*"
 }
