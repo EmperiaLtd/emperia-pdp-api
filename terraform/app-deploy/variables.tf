@@ -51,7 +51,7 @@ variable "prod_authorization_issuer"{
 }
 
 locals {
-  stage                = "development"
+  stage                = "dev"
   authorization_issuer =  terraform.workspace == "production" ? var.prod_authorization_issuer : (terraform.workspace == "staging" ? var.staging_authorization_issuer : var.dev_authorization_issuer)
   authorization_audience = terraform.workspace == "production" ? var.prod_authorization_audience : (terraform.workspace == "staging" ? var.staging_authorization_audience: var.dev_authorization_audience)
 }

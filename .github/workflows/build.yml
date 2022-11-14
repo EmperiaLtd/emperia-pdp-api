@@ -43,6 +43,7 @@ jobs:
           TF_VAR_env_aws_secret_access_key: ${{ secrets.ENV_AWS_SECRET_ACCESS_KEY }}
         run: |
           find . -name '*.pyc' -delete
+          rm -rf .terraform/
           cd terraform/app-deploy
           terraform init
           terraform workspace select ${GITHUB_REF##*/} || terraform workspace new ${GITHUB_REF##*/} 
