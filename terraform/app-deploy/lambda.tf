@@ -44,13 +44,13 @@ resource "null_resource" "ecr_image" {
   }
 }
 
-data "aws_ecr_image" "lambda_image" {
-  depends_on = [
-    null_resource.ecr_image
-  ]
-  repository_name = local.ecr_repository_name
-  image_tag       = local.ecr_image_tag
-}
+# data "aws_ecr_image" "lambda_image" {
+#   depends_on = [
+#     null_resource.ecr_image
+#   ]
+#   repository_name = local.ecr_repository_name
+#   image_tag       = local.ecr_image_tag
+# }
 
 resource "aws_iam_role" "lambda" {
   name               = "${local.prefix}-lambda-role-${local.stage}"
