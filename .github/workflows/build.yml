@@ -46,7 +46,5 @@ jobs:
           cd terraform/app-deploy
           terraform init
           terraform workspace select ${GITHUB_REF##*/} || terraform workspace new ${GITHUB_REF##*/} 
-    steps:   
-      -  name : Terraform destroy
-         id : destroy
-         run : terraform destroy -auto-approve
+          terraform plan
+          terraform apply -auto-approve

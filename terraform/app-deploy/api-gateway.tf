@@ -1,5 +1,5 @@
 resource "aws_apigatewayv2_api" "emperia-pdp-gateway" {
-  name          = "EmperiaPDPApiGateway-${local.stage}"
+  name          = "emperiapdpapigateway-${local.stage}"
   protocol_type = "HTTP"
 
   cors_configuration {
