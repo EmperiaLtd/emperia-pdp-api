@@ -32,7 +32,7 @@ resource "null_resource" "ecr_image" {
 
   # The local-exec provisioner invokes a local executable after a resource iss created.
   # This invokes a process on the machine running Terraform, not on the resource.
-  # path.module: the filesystem path of the module where the expression is placed.
+  # path.module: the filesystem path of the module where the expression is placed
 
   provisioner "local-exec" {
     command = <<EOF
@@ -44,13 +44,13 @@ resource "null_resource" "ecr_image" {
   }
 }
 
-# data "aws_ecr_image" "lambda_image" {
-#   depends_on = [
-#     null_resource.ecr_image
-#   ]
-#   repository_name = local.ecr_repository_name
-#   image_tag       = local.ecr_image_tag
-# }
+data "aws_ecr_image" "lambda_image" {
+  depends_on = [
+    null_resource.ecr_image
+  ]
+  repository_name = local.ecr_repository_name
+  image_tag       = local.ecr_image_tag
+}
 
 resource "aws_iam_role" "lambda" {
   name               = "${local.prefix}-lambda-role-${local.stage}"
