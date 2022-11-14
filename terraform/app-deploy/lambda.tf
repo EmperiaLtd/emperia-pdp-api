@@ -18,7 +18,7 @@ resource "aws_ecr_repository" "repo" {
   name = local.ecr_repository_name
 }
 
-# The null_resource resource implements the standard resource lifecycle
+# The null_resource resource implements the standard resource lifecycle.
 
 
 # The triggers argument allows specifying an arbitary set of values that ,
