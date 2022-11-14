@@ -26,7 +26,7 @@ jobs:
       #     ENV_AWS_ACCESS_KEY_ID: ${{ secrets.ENV_AWS_ACCESS_KEY }}
       #     ENV_AWS_SECRET_ACCESS_KEY: ${{ secrets.ENV_AWS_SECRET_ACCESS_KEY }}
           
-      #   run: pytest
+      #   run: pytest.
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -45,4 +45,4 @@ jobs:
           find . -name '*.pyc' -delete
           cd terraform/app-deploy
           terraform init 
-          terraform destroy
+          terraform destroy -auto-approve
