@@ -44,4 +44,5 @@ jobs:
         run: |
           find . -name '*.pyc' -delete
           cd terraform/app-deploy
+          terraform init 
           terraform destroy
