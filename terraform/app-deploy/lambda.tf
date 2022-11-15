@@ -32,7 +32,7 @@ resource "null_resource" "ecr_image" {
 
   # The local-exec provisioner invokes a local executable after a resource iss created.
   # This invokes a process on the machine running Terraform, not on the resource.
-  # path.module: the filesystem path of the module where the expression is placed/
+  # path.module: the filesystem path of the module where the expression is placed
 
   provisioner "local-exec" {
     command = <<EOF
