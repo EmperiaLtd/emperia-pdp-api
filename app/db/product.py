@@ -1,6 +1,5 @@
 import app.db.database as db
 import json
-import os
 database = db.redis
 # product_collection = database.get_collection("products_collection")
 

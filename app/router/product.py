@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, status, HTTPException
+from fastapi import APIRouter, status, HTTPException
 from app.db.product import (
     load_from_db,
     load_from_db_2,
