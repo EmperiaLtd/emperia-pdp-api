@@ -20,3 +20,12 @@ def load_from_db_2(market, org_id):
         return None
     json_data = json.loads(db_obj_2.encode('utf-8'))
     return json_data
+
+
+def load_from_db_3(org_id):
+    if org_id == "Lacoste":
+        market = ["EU", "MX", "CA", "EN"]
+        return market
+    elif org_id == "Pinko":
+        market = "en_GB"
+        return market

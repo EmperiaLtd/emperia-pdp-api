@@ -2,6 +2,7 @@ from fastapi import APIRouter, status, HTTPException
 from app.db.product import (
     load_from_db,
     load_from_db_2,
+    load_from_db_3,
 )
 
 router = APIRouter()
@@ -31,3 +32,14 @@ async def get_product_data(pid, market, org_id):
                 "Products data retrieved successfully"}
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                         detail="Product doesn't exist.")
+
+
+@router.get("/{org_id}",
+            response_description="Market data retrieved")
+async def get_product_data(org_id):
+    product = load_from_db_3(org_id)
+    if product:
+        return {"data": product, "status": 200, "message":
+                "Market data retrieved successfully"}
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail="Market doesn't exist.")
