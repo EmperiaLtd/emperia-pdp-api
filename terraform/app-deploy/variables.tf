@@ -26,7 +26,7 @@ variable "backend_remote_state_s3_bucket" {
   default = "terraform-state-emperia-pdp"
 }
 
-variable "dev_authorization_issuer"{
+variable "development_authorization_issuer"{
   default = "https://emperia.eu.auth0.com/"
 }
 
@@ -38,7 +38,7 @@ variable "prod_authorization_issuer"{
   default = "https://emperia-production.eu.auth0.com/"
 }
 
- variable "dev_authorization_audience" {
+ variable "development_authorization_audience" {
   default = "https://emperia-pdp-jwt-authorizer"
 }
 
