@@ -12,6 +12,6 @@ app.include_router(product.router, tags=["product"], prefix="/api/product")
 async def read_root():
     return {
         "status_code": 200,
-        "message": "Emperia PDP REST API"}
+        "message": "Hello world "}
 
 handler = Mangum(app, api_gateway_base_path="/{}".format(settings.stage_name))
