@@ -12,4 +12,4 @@ stripe==2.65.0
 sqlalchemy==1.4.27
 mysql-connector-python==8.0.27
 jsondiff==2.0.0
-redis==3.3.8
+redis-om==0.1.0
