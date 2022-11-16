@@ -9,4 +9,5 @@ class Settings(BaseSettings):
     s3_bucket_name: str = "terraform-state-emperia-pdp"
     database: str = "xxx"
 
+
 settings = Settings()
