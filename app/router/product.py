@@ -36,7 +36,7 @@ async def get_product_data(pid, market, org_id):
 
 @router.get("/{org_id}",
             response_description="Market data retrieved")
-async def get_product_data(org_id):
+async def get_market(org_id):
     product = load_from_db_3(org_id)
     if product:
         return {"data": product, "status": 200, "message":
