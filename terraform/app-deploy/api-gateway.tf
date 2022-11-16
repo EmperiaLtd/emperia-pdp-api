@@ -46,8 +46,8 @@ resource "aws_apigatewayv2_integration" "emperia-pdp-integration" {
 resource "aws_apigatewayv2_route" "emperia-pdp-api-get-route" {
   api_id             = aws_apigatewayv2_api.emperia-pdp-gateway.id
   route_key          = "GET /api/{proxy+}"
-  authorization_type = "JWT"
-  authorizer_id      = aws_apigatewayv2_authorizer.emperia-pdp-gateway.id
+  authorization_type = "NONE"
+  # authorizer_id      = aws_apigatewayv2_authorizer.emperia-pdp-gateway.id
   target             = "integrations/${aws_apigatewayv2_integration.emperia-pdp-integration.id}"
 }
 resource "aws_apigatewayv2_route" "emperia-pdp-docs-route" {
