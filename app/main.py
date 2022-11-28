@@ -8,7 +8,7 @@ app = FastAPI(title="emperia-pdp-API",
 app.include_router(product.router, tags=["product"], prefix="/api/product")
 
 
-@app.get("/")
+@ app.get("/")
 async def read_root():
     return {
         "status_code": 200,

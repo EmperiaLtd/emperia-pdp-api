@@ -1,10 +1,12 @@
 from fastapi import APIRouter, status, HTTPException
+import app.db.database as db
 from app.db.product import (
     load_from_db,
     load_from_db_2,
     load_from_db_3,
 )
-
+import json
+database = db.redis
 router = APIRouter()
 # def ResponseModel(data, status_code, message):
 #     return {
@@ -28,6 +30,9 @@ async def get_products(market, org_id):
 async def get_product_data(pid, market, org_id):
     product = load_from_db(pid, market, org_id)
     if product:
+        print(product)
+        file_1 = json.dumps(product)
+        database.set(f"{org_id}_{market}_{pid}", file_1)
         return {"data": product, "status": 200, "message":
                 "Products data retrieved successfully"}
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
