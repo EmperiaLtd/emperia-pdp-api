@@ -1,5 +1,4 @@
 import app.db.database as db
-import json
 import sys
 import json
 import boto3
@@ -18,7 +17,7 @@ def check_csv(org_id, market, pid):
         aws_secret_access_key='j0gF6HzrZf+0R82zq6hn57e+jBDFKCmSJd2iwaE8'
     )
     if org_id == "Saxx":
-        s3_client = boto3.resource('s3')
+        # s3_client = boto3.resource('s3')
         s3_bucket_name = 'terraform-state-emperia-pdp'
         my_bucket = s3.Bucket(s3_bucket_name)
         bucket_list = []
