@@ -26,8 +26,8 @@ def check_csv(org_id, market, pid):
             if file_name.find(".csv") != -1:
                 # append all csv in  the empty bucket
                 bucket_list.append(file.key)
-        if sys.version_info[0] < 3:
-            from io import StringIO  # Python 3.x
+        # if sys.version_info[0] < 3:
+        #     from io import StringIO  # Python 3.x
 
         for file in bucket_list:
             df = []
