@@ -147,4 +147,3 @@ def load_from_db_3(org_id):
     if org_id == "Saxx":
         market = ["CA", "INT", "USA"]
         return market
-   
