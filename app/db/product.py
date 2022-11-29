@@ -12,8 +12,8 @@ def check_csv(org_id, market, pid):
     s3 = boto3.resource(
         service_name='s3',
         region_name='eu-west-2',
-        aws_access_key_id='AKIAYYHDLHOCMCWZOW3J',
-        aws_secret_access_key='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'
+        aws_access_key_id='AKIAYYHDLHOCL4ZDB5FN',
+        aws_secret_access_key='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'
     )
     if org_id == "Saxx":
         # s3_client = boto3.resource('s3')

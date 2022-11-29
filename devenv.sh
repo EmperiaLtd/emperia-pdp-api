@@ -1,5 +1,5 @@
  #! /bin/sh
-export env_aws_access_key=AKIAYYHDLHOCMCWZOW3J 
-export env_aws_secret_access_key=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
+export env_aws_access_key=AKIAYYHDLHOCL4ZDB5FN 
+export env_aws_secret_access_key=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
 
 
