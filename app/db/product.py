@@ -144,12 +144,7 @@ def load_from_db_2(market, org_id):
 
 
 def load_from_db_3(org_id):
-    if org_id == "Lacoste":
-        market = ["EU", "MX", "CA", "EN"]
+    if org_id == "Saxx":
+        market = ["CA", "INT", "USA"]
         return market
-    elif org_id == "Pinko":
-        market = "en_GB"
-        return market
-    elif org_id == "Saxx":
-        market = "CA"
-        return market
+   
