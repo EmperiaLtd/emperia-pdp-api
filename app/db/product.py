@@ -83,7 +83,7 @@ def check_csv(org_id, market, pid):
                     data_table[pid] = {
                         'name': str(
                             product2[0]["Title"]), 'description': str(
-                            product2[0]["Metafield: short_description [string]"]), 'type': str(
+                            product2[0]["Metafield: short_description [string]"]),'type': str( # noqa
                             product2[0]["Type"]), 'tags': str(
                             product2[0]["Tags"]), 'URL': str(
                             product2[0]["URL"]), }
@@ -91,10 +91,10 @@ def check_csv(org_id, market, pid):
                 # return the product when solid is present for pid in csv
                 if solid_data not in data_table[pid]:
                     if solid != "nan":
-                        i = i + 1  # take care that no none value is inserted in db
+                        i = i + 1 
                         for ID, row in enumerate(product2):
                             Size_List = {str(product2[ID]["Option1 Value"]):
-                                         {'price': str(product2[ID]["Variant Price"])}}
+                                         {'price': str(product2[ID]["Variant Price"])}} # noqa
                             Images_List = {
                                 'Image': str(
                                     product2[ID]["Image Src"])}
@@ -105,11 +105,11 @@ def check_csv(org_id, market, pid):
                             'images': arr3
                         }
 
-                    elif solid == "nan":  # return the product when solid is is not present for the pid in csv
+                    elif solid == "nan":  # return the product when solid is is not present for the pid in csv # noqa: E501
                         if i == 0:
                             for ID, row in enumerate(product2):
-                                Size_List = {str(product2[ID]["Option1 Value"]):
-                                             {'price': str(product2[ID]["Variant Price"])}}
+                                Size_List = {str(product2[ID]["Option1 Value"]): # noqa
+                                             {'price': str(product2[ID]["Variant Price"])}} # noqa
                                 Images_List = {'Image': str(
                                     product2[ID]["Image Src"])}
                                 arr2.append(Size_List)
