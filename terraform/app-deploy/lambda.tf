@@ -122,7 +122,7 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
 
   function_name = "${local.prefix}-lambda-${local.stage}"
   role          = aws_iam_role.lambda.arn
-  timeout       = 3
+  timeout       = 120
   image_uri     = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   package_type  = "Image"
 
