@@ -94,7 +94,7 @@ def check_csv(org_id, market, pid):
                         i = i+1
                         for ID, row in enumerate(product2):
                             Size_List = {str(product2[ID]["Option1 Value"]):
-                                         {'price': str(product2[ID]["Variant Price"])}} # noqa
+                                         {'price': str(product2[ID]["Variant Price"])}}  # noqa
                             Images_List = {
                                 'Image': str(
                                     product2[ID]["Image Src"])}
