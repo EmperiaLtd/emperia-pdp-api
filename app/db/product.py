@@ -1,7 +1,7 @@
 import app.db.database as db
 import json
 import boto3
-import pandas
+import pandas as pd
 import io
 database = db.redis
 
@@ -36,7 +36,7 @@ def check_csv(org_id, market, pid):
             if file == "users/Saxx/Dev-CA.csv":
                 if market == "CA":
                     df.append(
-                        pandas.read_csv(
+                        pd.read_csv(
                             io.BytesIO(data),
                             header=0,
                             delimiter=",",
@@ -46,7 +46,7 @@ def check_csv(org_id, market, pid):
             if file == "users/Saxx/Dev-INT.csv":
                 if market == "INT":
                     df.append(
-                        pandas.read_csv(
+                        pd.read_csv(
                             io.BytesIO(data),
                             header=0,
                             delimiter=",",
@@ -56,7 +56,7 @@ def check_csv(org_id, market, pid):
             if file == "users/Saxx/Dev-USA.csv":
                 if market == "USA":
                     df.append(
-                        pandas.read_csv(
+                        pd.read_csv(
                             io.BytesIO(data),
                             header=0,
                             delimiter=",",
@@ -65,7 +65,7 @@ def check_csv(org_id, market, pid):
                     break
 
         for file in df:
-            products = pandas.DataFrame(data=file)
+            products = pd.DataFrame(data=file)
         products3 = products.get([col for col in products.columns])
         product2 = []
         data_table = {}
