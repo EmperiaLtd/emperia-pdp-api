@@ -91,7 +91,7 @@ def check_csv(org_id, market, pid):
                 # return the product when solid is present for pid in csv
                 if solid_data not in data_table[pid]:
                     if solid != "nan":
-                        i = i + 1 
+                        i = i+1
                         for ID, row in enumerate(product2):
                             Size_List = {str(product2[ID]["Option1 Value"]):
                                          {'price': str(product2[ID]["Variant Price"])}} # noqa
