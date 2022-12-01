@@ -147,7 +147,7 @@ resource "aws_lambda_permission" "apigw" {
   function_name = aws_lambda_function.emperia-pdp-lambda-function.arn
   principal     = "apigateway.amazonaws.com"
 
-  # The "/*/*" portion grants access from any method on any resource
+  # The "/*/*" portion grants access from any method on any resource 
   # within the API Gateway REST API
   source_arn = "${aws_apigatewayv2_api.emperia-pdp-gateway.execution_arn}/*/*"
 }
