@@ -12,8 +12,8 @@ def check_csv(org_id, market, pid):
     s3 = boto3.resource(
         service_name='s3',
         region_name='eu-west-2',
-        aws_access_key_id='AKIAYYHDLHOCL4ZDB5FN',
-        aws_secret_access_key='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'
+        aws_access_key_id='AKIAYYHDLHOCC53EA46L',
+        aws_secret_access_key='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'
     )
     if org_id == "Saxx":
         # s3_client = boto3.resource('s3')
@@ -75,6 +75,7 @@ def check_csv(org_id, market, pid):
         arr3 = []
         arr2 = []
         i = 0
+        data = []
         if len(product2) > 0:
             for ID, row in enumerate(product2):
                 solid = str(product2[ID]["Metafield: swatch_img [string]"])
@@ -102,13 +103,14 @@ def check_csv(org_id, market, pid):
                             if str(product2[0]["Status"]) == "Active":
                                 arr2.append(Size_List)
                             arr3.append(Images_List)
-                        data = {
+                        link = {
+                            'link': solid,
                             'size': arr2,
                             'images': arr3
+                            
                         }
-                        data_table[pid]["solid"] = {
-                            solid: data
-                        }
+                        data.append(link)
+                        data_table[pid]["solid"] = data
 
                     elif solid == "nan":  # return the product when solid is is not present for the pid in csv # noqa: E501
                         if i == 0:
@@ -122,13 +124,14 @@ def check_csv(org_id, market, pid):
                                 if str(product2[0]["Status"]) == "Active":
                                     arr2.append(Size_List)
                                 arr3.append(Images_List)
-                            data = {
-                                'size': arr2,
-                                'images': arr3
+                            link = {
+                               'link': solid,
+                               'size': arr2,
+                               'images': arr3
                             }
-                            data_table[pid]["solid"] = {
-                                solid: data
-                            }
+                            data.append(link)
+                            data_table[pid]["solid"] = data
+                            # data_table[pid]["solid"]=[link]
                         i = i + 1
             return data_table
     else:
