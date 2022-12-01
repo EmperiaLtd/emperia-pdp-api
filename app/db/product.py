@@ -107,8 +107,7 @@ def check_csv(org_id, market, pid):
                             'link': solid,
                             'size': arr2,
                             'images': arr3
-                            
-                        }
+                            }
                         data.append(link)
                         data_table[pid]["solid"] = data
 
