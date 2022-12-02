@@ -8,6 +8,20 @@ database = db.redis
 # product_collection = database.get_collection("products_collection")
 
 
+def stringify_price(price):
+    """
+    Takes any number as input for price and returns it in a normalised format
+    which always includes two decimal places ($0.00) for the price
+    :return str:
+    """
+    price = str(float(price))
+    if '.' in price and len(price.split('.')[-1]) == 1:
+        price = price + '0'
+    elif '.' not in price:
+        price = price + '.00'
+    return price
+
+
 def check_csv(org_id, market, pid):
     s3 = boto3.resource(
         service_name='s3',
@@ -96,7 +110,7 @@ def check_csv(org_id, market, pid):
                         for ID, row in enumerate(product2):
                             Size_List = {str(
                                 product2[ID]["Option1 Value"]):
-                                         {'price': str(product2[ID]["Variant Price"])}}  # noqa
+                                        {'price': stringify_price(str(product2[ID]["Variant Price"]))}}  # noqa
                             Images_List = {
                                 'Image': str(
                                     product2[ID]["Image Src"])}
@@ -116,7 +130,7 @@ def check_csv(org_id, market, pid):
                             for ID, row in enumerate(product2):
                                 Size_List = {str(
                                     product2[ID]["Option1 Value"]):
-                                            {'price': str(product2[ID]["Variant Price"])}}  # noqa
+                                            {'price': stringify_price(str(product2[ID]["Variant Price"]))}}  # noqa
                                 Images_List = {
                                     'Image': str(
                                         product2[ID]["Image Src"])}
