@@ -4,6 +4,7 @@ from app.db.product import (
     load_from_db,
     load_from_db_2,
     load_from_db_3,
+    market_name,
 )
 import json
 database = db.redis
@@ -28,11 +29,11 @@ async def get_products(market, org_id):
 @router.get("/{org_id}/{market}/{pid}",
             response_description="Product data retrieved")
 async def get_product_data(pid, market, org_id):
-    product = load_from_db(pid, market, org_id)
+    string = market_name(org_id, market, pid)
+    product = load_from_db(pid, market, org_id, string)
     if product:
-        print(product)
         file_1 = json.dumps(product)
-        database.set(f"{org_id}_{market}_{pid}", file_1)
+        database.set(string, file_1)
         return {"data": product, "status": 200, "message":
                 "Products data retrieved successfully"}
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

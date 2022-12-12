@@ -8,6 +8,16 @@ database = db.redis
 # product_collection = database.get_collection("products_collection")
 
 
+def market_name(org_id, market, pid):
+    if market == "US" or market == "us":
+        string = f"{org_id}_USA_{pid}"
+    if market == "CA" or market == "ca":
+        string = f"{org_id}_CA_{pid}"
+    if market == "INT" or market == "int":
+        string = f"{org_id}_INT_{pid}"
+    return string
+
+
 def stringify_price(price):
     """
     Takes any number as input for price and returns it in a normalised format
@@ -68,7 +78,7 @@ def check_csv(org_id, market, pid):
                             encoding='utf-8-sig'))
                     break
             if file == "users/Saxx/Dev-USA.csv":
-                if market == "USA":
+                if market == "US":
                     df.append(
                         pd.read_csv(
                             io.BytesIO(data),
@@ -151,8 +161,8 @@ def check_csv(org_id, market, pid):
         return None
 
 
-def load_from_db(pid, market, org_id):
-    pid2 = f"{org_id}_{market}_{pid}"
+def load_from_db(pid, market, org_id, solid):
+    pid2 = solid  # f"{org_id}_{market}_{pid}"
     db_obj = database.get(pid2)  # get the pid from database
     if db_obj is None:
         product_data = check_csv(org_id, market, pid)
@@ -172,5 +182,5 @@ def load_from_db_2(market, org_id):
 
 def load_from_db_3(org_id):
     if org_id == "Saxx":
-        market = ["CA", "INT", "USA"]
+        market = ["CA", "INT", "US"]
         return market
