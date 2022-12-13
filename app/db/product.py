@@ -5,7 +5,7 @@ import pandas as pd
 import io
 database = db.redis
 
-# product_collection = database.get_collection("products_collection")
+# product_collection = database.get_collection("Product_collection")
 
 
 def market_name(org_id, market, pid):
@@ -16,6 +16,11 @@ def market_name(org_id, market, pid):
     if market == "INT" or market == "int":
         string = f"{org_id}_INT_{pid}"
     return string
+
+
+def roundoff_var_id(varient_id):
+    varient_id = varient_id.split(".")[0]
+    return varient_id
 
 
 def stringify_price(price):
@@ -89,71 +94,73 @@ def check_csv(org_id, market, pid):
                     break
 
         for file in df:
-            products = pd.DataFrame(data=file)
-        products3 = products.get([col for col in products.columns])
-        product2 = []
+            Product = pd.DataFrame(data=file)
+        Product_struc = Product.get([col for col in Product.columns])
+        Product_2 = []
         data_table = {}
-        for index, row in products3.iterrows():
+        for index, row in Product_struc.iterrows():
             if row.ID == int(pid):
-                product2.append(row)
-        arr3 = []
-        arr2 = []
+                Product_2.append(row)
+        Dummy_Data = []
+        Dummy_List_1 = []
+        Dummy_List_2 = []
         i = 0
-        data = []
-        if len(product2) > 0:
-            for ID, row in enumerate(product2):
-                solid = str(product2[ID]["Metafield: swatch_img [string]"])
+        if len(Product_2) > 0:
+            for ID, row in enumerate(Product_2):
+                solid = str(Product_2[ID]["Metafield: swatch_img [string]"])
                 solid_data = f"solid/{solid}"
                 if pid not in data_table:
                     data_table[pid] = {
                         'name': str(
-                            product2[0]["Title"]), 'description': str(
-                            product2[0]["Metafield: short_description [string]"]), 'type': str(  # noqa
-                            product2[0]["Type"]), 'tags': str(
-                            product2[0]["Tags"]), 'URL': str(
-                            product2[0]["URL"]), }
+                            Product_2[0]["Title"]), 'description': str(
+                            Product_2[0]["Metafield: short_description [string]"]), 'type': str(  # noqa
+                            Product_2[0]["Type"]), 'tags': str(
+                            Product_2[0]["Tags"]), 'URL': str(
+                            Product_2[0]["URL"]), }
 
                 # return the product when solid is present for pid in csv
                 if solid_data not in data_table[pid]:
                     if solid != "nan":
                         i = i + 1
-                        for ID, row in enumerate(product2):
-                            Size_List = {str(
-                                product2[ID]["Option1 Value"]):
-                                        {'price': stringify_price(str(product2[ID]["Variant Price"]))}}  # noqa
+                        for ID, row in enumerate(Product_2):
+                            Size_List = {
+                                    'status' : str(Product_2[ID]["Status"]), str(   # noqa
+                                        Product_2[ID]["Option1 Value"]):
+                                        {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
+                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"]))}}  # noqa
                             Images_List = {
                                 'Image': str(
-                                    product2[ID]["Image Src"])}
-                            if str(product2[0]["Status"]) == "Active":
-                                arr2.append(Size_List)
-                            arr3.append(Images_List)
-                        link = {
+                                    Product_2[ID]["Image Src"])}
+                            Dummy_List_1.append(Size_List)
+                            Dummy_List_2.append(Images_List)
+                        Solid_Content = {
                             'link': solid,
-                            'size': arr2,
-                            'images': arr3
+                            'size': Dummy_List_1,
+                            'images': Dummy_List_2
                             }
-                        data.append(link)
-                        data_table[pid]["solid"] = data
+                        Dummy_Data.append(Solid_Content)
+                        data_table[pid]["solid"] = Dummy_Data
 
                     elif solid == "nan":  # return the product when solid is is not present for the pid in csv # noqa: E501
                         if i == 0:
-                            for ID, row in enumerate(product2):
-                                Size_List = {str(
-                                    product2[ID]["Option1 Value"]):
-                                            {'price': stringify_price(str(product2[ID]["Variant Price"]))}}  # noqa
+                            for ID, row in enumerate(Product_2):
+                                Size_List = {
+                                    'status' : str(Product_2[ID]["Status"]), str(        # noqa
+                                        Product_2[ID]["Option1 Value"]):
+                                        {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
+                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"]))}}  # noqa
                                 Images_List = {
                                     'Image': str(
-                                        product2[ID]["Image Src"])}
-                                if str(product2[0]["Status"]) == "Active":
-                                    arr2.append(Size_List)
-                                arr3.append(Images_List)
-                            link = {
+                                        Product_2[ID]["Image Src"])}
+                                Dummy_List_1.append(Size_List)
+                                Dummy_List_2.append(Images_List)
+                            Solid_Content = {
                                'link': solid,
-                               'size': arr2,
-                               'images': arr3
+                               'size': Dummy_List_1,
+                               'images': Dummy_List_2
                             }
-                            data.append(link)
-                            data_table[pid]["solid"] = data
+                            Dummy_Data.append(Solid_Content)
+                            data_table[pid]["solid"] = Dummy_Data
                             # data_table[pid]["solid"]=[link]
                         i = i + 1
             return data_table
