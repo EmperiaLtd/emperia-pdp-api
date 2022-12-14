@@ -128,7 +128,7 @@ def check_csv(org_id, market, pid):
                                         {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
                                         "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
                                         'status' : str(Product_2[ID]["Status"])}}  # noqa
-                            Images_List = Product_2[ID]["Image Src"]
+                            Images_List = str(Product_2[ID]["Image Src"])
                             Dummy_List_1.append(Size_List)
                             Dummy_List_2.append(Images_List)
                         Solid_Content = {
@@ -148,7 +148,7 @@ def check_csv(org_id, market, pid):
                                         {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
                                         "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
                                         'status' : str(Product_2[ID]["Status"])}}  # noqa
-                                Images_List = Product_2[ID]["Image Src"]
+                                Images_List = str(Product_2[ID]["Image Src"])
                                 Dummy_List_1.append(Size_List)
                                 Dummy_List_2.append(Images_List)
                             Solid_Content = {
