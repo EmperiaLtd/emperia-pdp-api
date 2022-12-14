@@ -124,13 +124,12 @@ def check_csv(org_id, market, pid):
                         i = i + 1
                         for ID, row in enumerate(Product_2):
                             Size_List = {
-                                    'status' : str(Product_2[ID]["Status"]), str(   # noqa
+                                     str(    
                                         Product_2[ID]["Option1 Value"]):
                                         {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
-                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"]))}}  # noqa
-                            Images_List = {
-                                'Image': str(
-                                    Product_2[ID]["Image Src"])}
+                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
+                                        'status' : str(Product_2[ID]["Status"])}}  # noqa
+                            Images_List = Product_2[ID]["Image Src"]
                             Dummy_List_1.append(Size_List)
                             Dummy_List_2.append(Images_List)
                         Solid_Content = {
@@ -145,13 +144,12 @@ def check_csv(org_id, market, pid):
                         if i == 0:
                             for ID, row in enumerate(Product_2):
                                 Size_List = {
-                                    'status' : str(Product_2[ID]["Status"]), str(        # noqa
+                                     str(        # noqa
                                         Product_2[ID]["Option1 Value"]):
                                         {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
-                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"]))}}  # noqa
-                                Images_List = {
-                                    'Image': str(
-                                        Product_2[ID]["Image Src"])}
+                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
+                                        'status' : str(Product_2[ID]["Status"])}}  # noqa
+                                Images_List = Product_2[ID]["Image Src"]
                                 Dummy_List_1.append(Size_List)
                                 Dummy_List_2.append(Images_List)
                             Solid_Content = {
