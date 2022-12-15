@@ -126,13 +126,13 @@ def check_csv(org_id, market, pid):
                             Size_List = {
                                      str(Product_2[ID]["Option1 Value"]):
                                         {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
-                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
+                                        "variant_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
                                         'status' : str(Product_2[ID]["Status"])}}  # noqa
                             Images_List = str(Product_2[ID]["Image Src"])
                             Dummy_List_1.append(Size_List)
                             Dummy_List_2.append(Images_List)
                         Solid_Content = {
-                            'link': solid,
+                            'product_Color': solid,
                             'size': Dummy_List_1,
                             'images': Dummy_List_2
                             }
@@ -146,13 +146,13 @@ def check_csv(org_id, market, pid):
                                      str(        # noqa
                                         Product_2[ID]["Option1 Value"]):
                                         {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
-                                        "varient_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
+                                        "variant_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
                                         'status' : str(Product_2[ID]["Status"])}}  # noqa
                                 Images_List = str(Product_2[ID]["Image Src"])
                                 Dummy_List_1.append(Size_List)
                                 Dummy_List_2.append(Images_List)
                             Solid_Content = {
-                               'link': solid,
+                               'product_Color': solid,
                                'size': Dummy_List_1,
                                'images': Dummy_List_2
                             }
