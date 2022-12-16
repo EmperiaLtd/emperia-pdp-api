@@ -3,9 +3,20 @@ import json
 import boto3
 import pandas as pd
 import io
-database = db.redis
-
+import os
 # product_collection = database.get_collection("Product_collection")
+
+
+def connect_to_db():
+    host = getParameterFromAWS(os.getenv("db_host"))
+    password = getParameterFromAWS(os.getenv("db_password"))
+    db_port = getParameterFromAWS(os.getenv("db_port"))
+    db.connect_to_DB(host, db_port, password)
+
+
+def getParameterFromAWS(key: str) -> str:
+    ssm_client = boto3.client(service_name="ssm")
+    return ssm_client.get_parameter(Name=key, WithDecryption=True)['Parameter']['Value'] # noqa
 
 
 def market_name(org_id, market, pid):
@@ -37,34 +48,32 @@ def stringify_price(price):
     return price
 
 
-def check_csv(org_id, market, pid):
+def data_frame(org_id, market, pid):
+
+    """ Function for making a data frame and apending that INTO a Empty list called DF  # noqa
+    and return that list(only if org_id==Saxx else it return None"""
     s3 = boto3.resource(
-        service_name='s3',
-        region_name='eu-west-2',
-        aws_access_key_id='AKIAYYHDLHOCC53EA46L',
-        aws_secret_access_key='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'
+        service_name='s3'
     )
     if org_id == "Saxx":
-        # s3_client = boto3.resource('s3')
         s3_bucket_name = 'terraform-state-emperia-pdp'
         my_bucket = s3.Bucket(s3_bucket_name)
         bucket_list = []
+
         for file in my_bucket.objects.filter(Prefix='users/Saxx/'):
             file_name = file.key
             if file_name.find(".csv") != -1:
                 # append all csv in  the empty bucket
                 bucket_list.append(file.key)
-        # if sys.version_info[0] < 3:
-        #     from io import StringIO # Python 3.x
 
         for file in bucket_list:
-            df = []
+            DF = []  # Empty list for storing dataframe
             obj = s3.Object(s3_bucket_name, file)
             data = obj.get()['Body'].read()
 
             if file == "users/Saxx/Dev-CA.csv":
                 if market == "CA":
-                    df.append(
+                    DF.append(
                         pd.read_csv(
                             io.BytesIO(data),
                             header=0,
@@ -74,7 +83,7 @@ def check_csv(org_id, market, pid):
                     break
             if file == "users/Saxx/Dev-INT.csv":
                 if market == "INT":
-                    df.append(
+                    DF.append(
                         pd.read_csv(
                             io.BytesIO(data),
                             header=0,
@@ -84,7 +93,7 @@ def check_csv(org_id, market, pid):
                     break
             if file == "users/Saxx/Dev-USA.csv":
                 if market == "US":
-                    df.append(
+                    DF.append(
                         pd.read_csv(
                             io.BytesIO(data),
                             header=0,
@@ -92,42 +101,67 @@ def check_csv(org_id, market, pid):
                             low_memory=False,
                             encoding='utf-8-sig'))
                     break
+        return DF
+    else:
+        return None
 
-        for file in df:
-            Product = pd.DataFrame(data=file)
-        Product_struc = Product.get([col for col in Product.columns])
-        Product_2 = []
-        data_table = {}
-        for index, row in Product_struc.iterrows():
-            if row.ID == int(pid):
-                Product_2.append(row)
-        Dummy_Data = []
-        Dummy_List_1 = []
-        Dummy_List_2 = []
-        i = 0
-        if len(Product_2) > 0:
-            for ID, row in enumerate(Product_2):
-                solid = str(Product_2[ID]["Metafield: swatch_img [string]"])
-                solid_data = f"solid/{solid}"
-                if pid not in data_table:
-                    data_table[pid] = {
-                        'name': str(
-                            Product_2[0]["Title"]), 'description': str(
-                            Product_2[0]["Metafield: short_description [string]"]), 'type': str(  # noqa
-                            Product_2[0]["Type"]), 'tags': str(
-                            Product_2[0]["Tags"]), 'URL': str(
-                            Product_2[0]["URL"]), }
 
-                # return the product when solid is present for pid in csv
-                if solid_data not in data_table[pid]:
-                    if solid != "nan":
-                        i = i + 1
+def check_csv(org_id, market, pid):
+    DF = data_frame(org_id, market, pid)
+    for file in DF:
+        Product = pd.DataFrame(data=file)
+    Product_struc = Product.get([col for col in Product.columns])
+    Product_2 = []
+    data_table = {}
+    for index, row in Product_struc.iterrows():
+        if row.ID == int(pid):
+            Product_2.append(row)
+    Dummy_Data = []
+    Dummy_List_1 = []
+    Dummy_List_2 = []
+    i = 0
+    if len(Product_2) > 0:
+        for ID, row in enumerate(Product_2):
+            solid = str(Product_2[ID]["Metafield: swatch_img [string]"])
+            solid_data = f"solid/{solid}"
+            if pid not in data_table:
+                data_table[pid] = {
+                    'name': str(
+                        Product_2[0]["Title"]), 'description': str(
+                        Product_2[0]["Metafield: short_description [string]"]), 'type': str(  # noqa
+                        Product_2[0]["Type"]), 'tags': str(
+                        Product_2[0]["Tags"]), 'URL': str(
+                        Product_2[0]["URL"]), }
+
+            # return the product when solid is present for pid in csv
+            if solid_data not in data_table[pid]:
+                if solid != "nan":
+                    i = i + 1
+                    for ID, row in enumerate(Product_2):
+                        Size_List = {
+                                    str(Product_2[ID]["Option1 Value"]):
+                                    {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
+                                    "variant_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
+                                    'status' : str(Product_2[ID]["Status"])}}  # noqa
+                        Images_List = str(Product_2[ID]["Image Src"])
+                        Dummy_List_1.append(Size_List)
+                        Dummy_List_2.append(Images_List)
+                    Solid_Content = {
+                        'product_Color': solid,
+                        'size': Dummy_List_1,
+                        'images': Dummy_List_2
+                        }
+                    Dummy_Data.append(Solid_Content)
+                    data_table[pid]["solid"] = Dummy_Data
+
+                elif solid == "nan":  # return the product when solid is is not present for the pid in csv # noqa: E501
+                    if i == 0:
                         for ID, row in enumerate(Product_2):
                             Size_List = {
-                                     str(Product_2[ID]["Option1 Value"]):
-                                        {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
-                                        "variant_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
-                                        'status' : str(Product_2[ID]["Status"])}}  # noqa
+                                    str(Product_2[ID]["Option1 Value"]):
+                                    {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
+                                    "variant_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
+                                    'status' : str(Product_2[ID]["Status"])}}  # noqa
                             Images_List = str(Product_2[ID]["Image Src"])
                             Dummy_List_1.append(Size_List)
                             Dummy_List_2.append(Images_List)
@@ -135,52 +169,32 @@ def check_csv(org_id, market, pid):
                             'product_Color': solid,
                             'size': Dummy_List_1,
                             'images': Dummy_List_2
-                            }
+                        }
                         Dummy_Data.append(Solid_Content)
                         data_table[pid]["solid"] = Dummy_Data
-
-                    elif solid == "nan":  # return the product when solid is is not present for the pid in csv # noqa: E501
-                        if i == 0:
-                            for ID, row in enumerate(Product_2):
-                                Size_List = {
-                                     str(        # noqa
-                                        Product_2[ID]["Option1 Value"]):
-                                        {'price': stringify_price(str(Product_2[ID]["Variant Price"])), # noqa
-                                        "variant_id" : roundoff_var_id(str(Product_2[ID]["Variant ID"])), # noqa
-                                        'status' : str(Product_2[ID]["Status"])}}  # noqa
-                                Images_List = str(Product_2[ID]["Image Src"])
-                                Dummy_List_1.append(Size_List)
-                                Dummy_List_2.append(Images_List)
-                            Solid_Content = {
-                               'product_Color': solid,
-                               'size': Dummy_List_1,
-                               'images': Dummy_List_2
-                            }
-                            Dummy_Data.append(Solid_Content)
-                            data_table[pid]["solid"] = Dummy_Data
-                            # data_table[pid]["solid"]=[link]
-                        i = i + 1
-            return data_table
-    else:
-        return None
+                        # data_table[pid]["solid"]=[link]
+                    i = i + 1
+        return data_table
 
 
 def load_from_db(pid, market, org_id, solid):
-    pid2 = solid  # f"{org_id}_{market}_{pid}"
-    db_obj = database.get(pid2)  # get the pid from database
-    if db_obj is None:
+    p_id_2 = solid  # f"{org_id}_{market}_{pid}"
+    connect_to_db()
+    db_Obj = db.redis.get(p_id_2)  # get the pid from database
+    if db_Obj is None:
         product_data = check_csv(org_id, market, pid)
         return product_data
-    json_data = json.loads(db_obj.encode('utf-8'))
+    json_data = json.loads(db_Obj.encode('utf-8'))
     return json_data
 
 
 def load_from_db_2(market, org_id):
-    market2 = f"{org_id}_{market}"  # get the market from database
-    db_obj_2 = database.get(market2)
-    if db_obj_2 is None:
+    Market_2 = f"{org_id}_{market}"  # get the market from database
+    connect_to_db()
+    db_Obj_2 = db.redis.get(Market_2)
+    if db_Obj_2 is None:
         return None
-    json_data = json.loads(db_obj_2.encode('utf-8'))
+    json_data = json.loads(db_Obj_2.encode('utf-8'))
     return json_data
 
 
