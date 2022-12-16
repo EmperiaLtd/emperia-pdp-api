@@ -65,7 +65,7 @@ def data_frame(org_id, market, pid):
         for file in my_bucket.objects.filter(Prefix='users/Saxx/'):
             file_name = file.key
             if file_name.find(".csv") != -1:
-                # append all csv in  the empty bucket
+                # append all csv in  the empty  bucket
                 bucket_list.append(file.key)
 
         for file in bucket_list:
