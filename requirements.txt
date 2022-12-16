@@ -4,7 +4,7 @@ motor==2.2.0
 pymongo[srv]
 gunicorn==19.9.0
 mangum==0.12.3
-aiobotocore==0.12.0
+boto3==1.26.25
 pytest==6.2.5
 requests==2.27.1
 deepdiff==4.0.7
