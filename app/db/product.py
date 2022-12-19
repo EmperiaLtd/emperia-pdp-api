@@ -8,9 +8,7 @@ import os
 
 
 def connect_to_db():
-    print(os.getenv("db_host"))
     host = getParameterFromAWS(os.getenv("db_host"))
-    print(host, "host=")
     password = getParameterFromAWS(os.getenv("db_password"))
     db_port = getParameterFromAWS(os.getenv("db_port"))
     db.connect_to_DB(host, db_port, password)
@@ -133,7 +131,8 @@ def check_csv(org_id, market, pid):
                         Product_2[0]["Metafield: short_description [string]"]), 'type': str(  # noqa
                         Product_2[0]["Type"]), 'tags': str(
                         Product_2[0]["Tags"]), 'URL': str(
-                        Product_2[0]["URL"]), }
+                        Product_2[0]["URL"]), 'handle': str(
+                        Product_2[0]["Handle"]), }
 
             # return the product when solid is present for pid in csv
             if solid_data not in data_table[pid]:
