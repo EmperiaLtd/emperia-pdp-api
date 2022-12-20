@@ -1,5 +1,6 @@
 import json
 import os
+import os.path
 
 from fastapi.testclient import TestClient
 
@@ -37,10 +38,9 @@ def test_get_product_data_exists():
     os.environ["db_host"] = "/saxx/db/endpoint"
     os.environ["db_password"] = "/saxx/db/password"
     os.environ["db_port"] = "/saxx/db/port"
-
+    dirpath = os.path.dirname(__file__)
     expected_data_file = open(
-        "/Users/shahzaib/Desktop/emperia/"
-        + "emperia-pdp-api/tests/resources/expected_response_data.json"
+        os.path.join(dirpath, "resources", "expected_response_data.json")
     )
     expected_status_code = 200
     expected_data = json.load(expected_data_file)
