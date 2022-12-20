@@ -1,0 +1,28 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # Details of all these hooks can be looked at here. https://pre-commit.com/hooks.html
+      -   id: trailing-whitespace
+      -   id: end-of-file-fixer
+      -   id: check-yaml
+      -   id: debug-statements
+      -   id: requirements-txt-fixer
+
+    # Fixing code formating
+  - repo: https://github.com/psf/black
+    rev: 22.12.0
+    hooks:
+    - id: black
+
+    # fixing imports
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.2
+    hooks:
+      - id: isort
+
+    # fixing bad programming practices. i.e. unused variable or any possible bug
+  - repo: https://github.com/PyCQA/flake8
+    rev: 3.8.3
+    hooks:
+    - id: flake8

@@ -56,4 +56,3 @@ terraform apply -auto-approve
 - `Assets/GameAssets/_Zeus/SDK/src/IO.Swagger/_Extra/Resources/Installers/ServerInstaller.asset`
 - Change the `Api Url` under `Development Config` to [`http://127.0.0.1:8000`](http://127.0.0.1:8000/)
 - Now Unity is pointing to local server, and you can check the logs in terminal for all requests
-
