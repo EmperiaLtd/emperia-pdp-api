@@ -148,7 +148,7 @@ def check_csv(org_id, market, pid):
                         Dummy_List_1.append(Size_List)
                         Dummy_List_2.append(Images_List)
                     Solid_Content = {
-                        'product_Color': solid,
+                        'product_color': solid,
                         'size': Dummy_List_1,
                         'images': Dummy_List_2
                         }
@@ -167,7 +167,7 @@ def check_csv(org_id, market, pid):
                             Dummy_List_1.append(Size_List)
                             Dummy_List_2.append(Images_List)
                         Solid_Content = {
-                            'product_Color': solid,
+                            'product_color': solid,
                             'size': Dummy_List_1,
                             'images': Dummy_List_2
                         }
