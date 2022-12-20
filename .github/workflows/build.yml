@@ -21,6 +21,10 @@ jobs:
       - name: run linter [flake8]
         run: flake8 .
 
+      - name: Test with pytest
+        run: |
+          pytest
+
       # - name: run unit tests [pytest]
       #   env:
       #     ENV_AWS_ACCESS_KEY_ID: ${{ secrets.ENV_AWS_ACCESS_KEY }}

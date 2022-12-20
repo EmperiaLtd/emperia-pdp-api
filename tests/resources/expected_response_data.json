@@ -1,0 +1,66 @@
+{
+  "6743322198106": {
+    "name": "Ultra",
+    "description": "Super Soft",
+    "type": "Underwear",
+    "tags": "Act|Lounging, Act|Traveling, BallPark Pouch, BallPark Pouch\u2122?, Blue, Boxer Brief, BPP|BPP, Class|F22|Fashion, Class|F22|Ing Only, Colorway|Rough Terrain Geo- Blue, Col|Ultra, Demo|Mens, Fabric|Soft Jersey, Fit|Relaxed, Fly|Fly, OffMAP|F22|Dec26, Pack|Single, Print|Printed, Rough Terrain Geo- Blue, Season|F22|July15, Sil|Boxer Brief, Stat|New|Yes, Stat|Online Exclusive|No, sxbb30f-rtb, SXBB30FRTB, Tech|BPP, Use|Everyday",
+    "URL": "https://dev-usa-saxx.myshopify.com/products/sxbb30f_rtb",
+    "handle": "sxbb30f_rtb",
+    "solid": [
+      {
+        "product_color": " https://cdn.shopify.com/s/files/1/2404/2903/files/sxbb30f-rtb_sw_fa22.jpg",
+        "size": [
+          {
+            "XS": {
+              "price": "34.00",
+              "variant_id": "39959928733786",
+              "status": "Active"
+            }
+          },
+          {
+            "S": {
+              "price": "34.00",
+              "variant_id": "39959928766554",
+              "status": "Active"
+            }
+          },
+          {
+            "M": {
+              "price": "34.00",
+              "variant_id": "39959928799322",
+              "status": "Active"
+            }
+          },
+          {
+            "L": {
+              "price": "34.00",
+              "variant_id": "39959928832090",
+              "status": "Active"
+            }
+          },
+          {
+            "XL": {
+              "price": "34.00",
+              "variant_id": "39959928864858",
+              "status": "Active"
+            }
+          },
+          {
+            "XXL": {
+              "price": "34.00",
+              "variant_id": "39959928897626",
+              "status": "Active"
+            }
+          }
+        ],
+        "images": [
+          "https://cdn.shopify.com/s/files/1/2416/0553/products/sxbb30f-rtb_1form_f_fa22_fe5a29e5-31e4-4fcd-833d-0122f8ab7091.png?v=1664305105",
+          "https://cdn.shopify.com/s/files/1/2416/0553/products/sxbb30f-rtb_1form_b_fa22_9eba4bae-425a-47d6-b0aa-badc57a9d55c.png?v=1664305105",
+          "https://cdn.shopify.com/s/files/1/2416/0553/products/sxbb30f-rtb_2body_f_fa22.jpg?v=1664305105",
+          "https://cdn.shopify.com/s/files/1/2416/0553/products/sxbb30f-rtb_2body_b_fa22.jpg?v=1664305105",
+          "https://cdn.shopify.com/s/files/1/2416/0553/products/bpp-tech-2022_e90a6382-2bd8-4507-b17c-1b9e41badb1b.png?v=1664305105"
+        ]
+      }
+    ]
+  }
+}

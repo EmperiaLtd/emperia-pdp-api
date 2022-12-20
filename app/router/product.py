@@ -1,42 +1,35 @@
-import json
-
 from fastapi import APIRouter, HTTPException, status
 
-# import app.db.database as db
-import app.db.database as db
-from app.db.product import (load_from_db, load_from_db_2, load_from_db_3,
-                            market_name)
+from app.db.product import create_solid, get_markets_by_org_id, load_from_db
 
-# database = db.redis
 router = APIRouter()
-# def ResponseModel(data, status_code, message):
-#     return {
-#         "data": data,
-#         "status_code": status_code,
-#         "message": message
-#     }
 
 
 @router.get("/{org_id}/{market}/{pid}", response_description="Product data retrieved")
 async def get_product_data(pid, market, org_id):
-    string = market_name(org_id, market, pid)
-    product = load_from_db(pid, market, org_id, string)
-    if product:
-        file_1 = json.dumps(product)
-        db.redis.set(string, file_1)
-        return {
-            "data": product,
-            "status": 200,
-            "message": "Products data retrieved successfully",
-        }
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND, detail="Product doesn't exist."
-    )
+    solid = create_solid(org_id, market, pid)  # {org_id}_{market}_{pid}
+    if solid:
+        product = load_from_db(solid)
+        if product:
+            return {
+                "data": product,
+                "status": 200,
+                "message": "Products data retrieved successfully",
+            }
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Product doesn't exist."
+            )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Unsupported Market."
+        )
 
 
 @router.get("/{org_id}/{market}", response_description="Products retrieved")
 async def get_products(market, org_id):
-    products = load_from_db_2(market, org_id)
+    solid = f"{org_id}_{market}"
+    products = load_from_db(solid)
     if products:
         return {
             "data": products,
@@ -48,10 +41,10 @@ async def get_products(market, org_id):
 
 @router.get("/{org_id}", response_description="Market data retrieved")
 async def get_market(org_id):
-    product = load_from_db_3(org_id)
-    if product:
+    markets = get_markets_by_org_id(org_id)
+    if markets:
         return {
-            "data": product,
+            "data": markets,
             "status": 200,
             "message": "Market data retrieved successfully",
         }
