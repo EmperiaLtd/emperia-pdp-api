@@ -15,6 +15,15 @@ def connect_to_db():
     db.connect_to_DB(host, db_port, password)
 
 
+def dump_product_to_db(id, product, market, client):
+    product = json.dumps(product)
+    db.redis.set(f"{client}_{market}_{id}", product)
+
+
+def remove_product_from_db(id, market, client):
+    db.redis.delete(f"{client}_{market}_{id}")
+
+
 def getParameterFromAWS(key: str) -> str:
     ssm_client = boto3.client(service_name="ssm")
     return ssm_client.get_parameter(Name=key, WithDecryption=True)["Parameter"][
@@ -24,7 +33,7 @@ def getParameterFromAWS(key: str) -> str:
 
 def create_solid(org_id, market, pid):
     if market == "US" or market == "us":
-        return f"{org_id}_USA_{pid}"
+        return f"{org_id}_US_{pid}"
     if market == "CA" or market == "ca":
         return f"{org_id}_UK_{pid}"
     if market == "INT" or market == "int":

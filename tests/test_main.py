@@ -4,6 +4,7 @@ import os.path
 
 from fastapi.testclient import TestClient
 
+from app.db.product import connect_to_db, dump_product_to_db, remove_product_from_db
 from app.main import app
 
 client = TestClient(app)
@@ -33,8 +34,8 @@ def test_get_market_data_not_exists():
 
 def test_get_product_data_exists():
     org_id = "Saxx"
-    market = "US"
-    product_id = "6743322198106"
+    market = "INT"
+    product_id = "121212121"
     os.environ["db_host"] = "/saxx/db/endpoint"
     os.environ["db_password"] = "/saxx/db/password"
     os.environ["db_port"] = "/saxx/db/port"
@@ -44,11 +45,15 @@ def test_get_product_data_exists():
     )
     expected_status_code = 200
     expected_data = json.load(expected_data_file)
+    connect_to_db()
+    dump_product_to_db(product_id, expected_data, market, org_id)
 
     response = client.get(f"api/product/{org_id}/{market}/{product_id}")
 
     assert response.status_code == expected_status_code
     assert response.json()["data"] == expected_data
+
+    remove_product_from_db(product_id, market, org_id)
 
 
 def test_get_product_data_not_exists():

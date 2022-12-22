@@ -4,10 +4,18 @@ repos:
     hooks:
       # Details of all these hooks can be looked at here. https://pre-commit.com/hooks.html
       -   id: trailing-whitespace
+          exclude: ^TourConstructor/
       -   id: end-of-file-fixer
+          exclude: ^TourConstructor/
       -   id: check-yaml
       -   id: debug-statements
       -   id: requirements-txt-fixer
+
+    # fixing imports
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.2
+    hooks:
+      - id: isort
 
     # Fixing code formating
   - repo: https://github.com/psf/black
@@ -20,12 +28,6 @@ repos:
     hooks:
     - id: check-github-workflows
     - id: check-github-actions
-
-    # fixing imports
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.11.2
-    hooks:
-      - id: isort
 
     # fixing bad programming practices. i.e. unused variable or any possible bug
   - repo: https://github.com/PyCQA/flake8
