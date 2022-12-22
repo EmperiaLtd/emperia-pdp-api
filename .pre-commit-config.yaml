@@ -4,9 +4,7 @@ repos:
     hooks:
       # Details of all these hooks can be looked at here. https://pre-commit.com/hooks.html
       -   id: trailing-whitespace
-          exclude: ^TourConstructor/
       -   id: end-of-file-fixer
-          exclude: ^TourConstructor/
       -   id: check-yaml
       -   id: debug-statements
       -   id: requirements-txt-fixer
