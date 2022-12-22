@@ -28,3 +28,9 @@ terraform apply -auto-approve
 - `uvicorn app.main:app --reload`
 - By default server is connected to Redis cloud DB and its paramteres are stored in [AWS Parameter Store]https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html
 - You can check if it is running properly or not by running `curl localhost:8000`
+
+### Testing
+- All API tests are written in test_main.py
+- To run tests simply run these commands
+- `pip install -r requirements.txt`
+- `pytest`
