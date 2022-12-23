@@ -26,7 +26,7 @@ def getParameterFromAWS(key: str) -> str:
 
 def market_name(org_id, market, pid):
     if market == "US" or market == "us":
-        string = f"{org_id}_USA_{pid}"
+        string = f"{org_id}_US_{pid}"
     if market == "CA" or market == "ca":
         string = f"{org_id}_CA_{pid}"
     if market == "INT" or market == "int":
