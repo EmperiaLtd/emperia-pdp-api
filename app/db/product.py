@@ -4,7 +4,6 @@ import os
 
 import boto3
 import pandas as pd
-from redis.commands.json.path import Path as RedisPath
 
 import app.db.database as db
 
@@ -207,13 +206,14 @@ def check_csv(org_id, market, pid):
 def load_from_db(pid, market, org_id, solid):
     p_id_2 = solid  # f"{org_id}_{market}_{pid}"
     connect_to_db()
-    db_Obj = db.redis.json().get(p_id_2)  # get the pid from database
+    db_Obj = db.redis.get(p_id_2)  # get the pid from database
     if db_Obj is None:
         product_data = check_csv(org_id, market, pid)
         product_json = json.dumps(product_data)
-        db.redis.json().set(solid, RedisPath.root_path(), product_json)
+        db.redis.set(solid, product_json)
         return product_data
-    return db_Obj
+    json_data = json.loads(db_Obj.encode("utf-8"))
+    return json_data
 
 
 def load_from_db_2(market, org_id):
@@ -222,7 +222,8 @@ def load_from_db_2(market, org_id):
     db_Obj_2 = db.redis.get(Market_2)
     if db_Obj_2 is None:
         return None
-    return db_Obj_2
+    json_data = json.loads(db_Obj_2.encode("utf-8"))
+    return json_data
 
 
 def load_from_db_3(org_id):
