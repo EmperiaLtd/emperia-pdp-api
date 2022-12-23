@@ -213,8 +213,7 @@ def load_from_db(pid, market, org_id, solid):
         product_json = json.dumps(product_data)
         db.redis.json().set(solid, RedisPath.root_path(), product_json)
         return product_data
-    json_data = json.loads(db_Obj.encode("utf-8"))
-    return json_data
+    return db_Obj
 
 
 def load_from_db_2(market, org_id):
@@ -223,8 +222,7 @@ def load_from_db_2(market, org_id):
     db_Obj_2 = db.redis.get(Market_2)
     if db_Obj_2 is None:
         return None
-    json_data = json.loads(db_Obj_2.encode("utf-8"))
-    return json_data
+    return db_Obj_2
 
 
 def load_from_db_3(org_id):
