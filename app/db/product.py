@@ -206,7 +206,7 @@ def check_csv(org_id, market, pid):
 def load_from_db(pid, market, org_id, solid):
     p_id_2 = solid  # f"{org_id}_{market}_{pid}"
     connect_to_db()
-    db_Obj = db.redis.get(p_id_2)  # get the pid from database
+    db_Obj = db.redis.json().get(p_id_2)  # get the pid from database
     if db_Obj is None:
         product_data = check_csv(org_id, market, pid)
         return product_data
