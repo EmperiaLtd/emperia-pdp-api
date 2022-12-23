@@ -1,9 +1,5 @@
-import json
-
 from fastapi import APIRouter, HTTPException, status
 
-# import app.db.database as db
-import app.db.database as db
 from app.db.product import load_from_db, load_from_db_2, load_from_db_3, market_name
 
 # database = db.redis
@@ -19,11 +15,9 @@ router = APIRouter()
 @router.get("/{org_id}/{market}/{pid}", response_description="Product data retrieved")
 async def get_product_data(pid, market, org_id):
     pid = pid.lower()
-    string = market_name(org_id, market, pid)
-    product = load_from_db(pid, market, org_id, string)
+    solid = market_name(org_id, market, pid)
+    product = load_from_db(pid, market, org_id, solid)
     if product:
-        file_1 = json.dumps(product)
-        db.redis.set(string, file_1)
         return {
             "data": product,
             "status": 200,
