@@ -9,17 +9,23 @@ repos:
       -   id: debug-statements
       -   id: requirements-txt-fixer
 
+    # fixing imports
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.2
+    hooks:
+      - id: isort
+
     # Fixing code formating
   - repo: https://github.com/psf/black
     rev: 22.12.0
     hooks:
     - id: black
 
-    # fixing imports
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.11.2
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.19.0
     hooks:
-      - id: isort
+    - id: check-github-workflows
+    - id: check-github-actions
 
     # fixing bad programming practices. i.e. unused variable or any possible bug
   - repo: https://github.com/PyCQA/flake8
