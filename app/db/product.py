@@ -115,15 +115,15 @@ def data_frame(org_id, market, pid):
         return None
 
 
-def check_csv(org_id, market, pid):
-    DF = data_frame(org_id, market, pid)
+def check_csv(org_id, market, p_name):
+    DF = data_frame(org_id, market, p_name)
     for file in DF:
         Product = pd.DataFrame(data=file)
     product_struc = Product.get([col for col in Product.columns])
     Product_2 = []
     data_table = {}
     for index, row in product_struc.iterrows():
-        if row.ID == int(pid):
+        if row.Title == int(p_name):
             Product_2.append(row)
     Dummy_Data = []
     Dummy_List_1 = []
@@ -133,8 +133,8 @@ def check_csv(org_id, market, pid):
         for ID, row in enumerate(Product_2):
             solid = str(Product_2[ID]["Metafield: swatch_img [string]"])
             solid_data = f"solid/{solid}"
-            if pid not in data_table:
-                data_table[pid] = {
+            if p_name not in data_table:
+                data_table[p_name] = {
                     "name": str(Product_2[0]["Title"]),
                     "description": str(
                         Product_2[0]["Metafield: short_description [string]"]
@@ -146,7 +146,7 @@ def check_csv(org_id, market, pid):
                 }
 
             # return the product when solid is present for pid in csv
-            if solid_data not in data_table[pid]:
+            if solid_data not in data_table[p_name]:
                 if solid != "nan":
                     i = i + 1
                     for ID, row in enumerate(Product_2):
@@ -170,7 +170,7 @@ def check_csv(org_id, market, pid):
                         "images": Dummy_List_2,
                     }
                     Dummy_Data.append(Solid_Content)
-                    data_table[pid]["solid"] = Dummy_Data
+                    data_table[p_name]["solid"] = Dummy_Data
 
                 elif (
                     solid == "nan"
@@ -197,18 +197,18 @@ def check_csv(org_id, market, pid):
                             "images": Dummy_List_2,
                         }
                         Dummy_Data.append(Solid_Content)
-                        data_table[pid]["solid"] = Dummy_Data
+                        data_table[p_name]["solid"] = Dummy_Data
                         # data_table[pid]["solid"]=[link]
                     i = i + 1
         return data_table
 
 
-def load_from_db(pid, market, org_id, solid):
-    p_id_2 = solid  # f"{org_id}_{market}_{pid}"
+def load_from_db(p_name, market, org_id, solid):
+    p_id_2 = solid  # f"{org_id}_{market}_{p_name}"
     connect_to_db()
     db_Obj = db.redis.get(p_id_2)  # get the pid from database
     if db_Obj is None:
-        product_data = check_csv(org_id, market, pid)
+        product_data = check_csv(org_id, market, p_name)
         product_json = json.dumps(product_data)
         db.redis.set(solid, product_json)
         return product_data

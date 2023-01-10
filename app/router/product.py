@@ -12,11 +12,13 @@ router = APIRouter()
 #     }
 
 
-@router.get("/{org_id}/{market}/{pid}", response_description="Product data retrieved")
-async def get_product_data(pid, market, org_id):
-    pid = pid.lower()
-    solid = market_name(org_id, market, pid)
-    product = load_from_db(pid, market, org_id, solid)
+@router.get(
+    "/{org_id}/{market}/{p_name}", response_description="Product data retrieved"
+)
+async def get_product_data(p_name, market, org_id):
+    p_name = p_name.lower()
+    solid = market_name(org_id, market, p_name)
+    product = load_from_db(p_name, market, org_id, solid)
     if product:
         return {
             "data": product,
