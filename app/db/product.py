@@ -217,7 +217,7 @@ def load_from_db(p_name, market, org_id, solid):
 
 
 def load_from_db_2(market, org_id):
-    Market_2 = f"{org_id}_{market}"  # get the market from database
+    Market_2 = f"{org_id}_{market}_*"  # get the market from database
     connect_to_db()
     db_Obj_2 = db.redis.get(Market_2)
     if db_Obj_2 is None:
