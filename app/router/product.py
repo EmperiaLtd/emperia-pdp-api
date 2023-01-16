@@ -1,6 +1,12 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.db.product import load_from_db, load_from_db_2, load_from_db_3, market_name
+from app.db.product import (
+    load_from_db,
+    load_from_db_2,
+    load_from_db_3,
+    market_name,
+    validate_env,
+)
 
 # database = db.redis
 router = APIRouter()
@@ -13,12 +19,13 @@ router = APIRouter()
 
 
 @router.get(
-    "/{org_id}/{market}/{p_name}", response_description="Product data retrieved"
+    "/{env}/{org_id}/{market}/{p_name}", response_description="Product data retrieved"
 )
-async def get_product_data(p_name, market, org_id):
+async def get_product_data(env, p_name, market, org_id):
     p_name = p_name.lower()
     solid = market_name(org_id, market, p_name)
-    product = load_from_db(p_name, market, org_id, solid)
+    validate_env(env)
+    product = load_from_db(env, p_name, market, org_id, solid)
     if product:
         return {
             "data": product,
@@ -30,9 +37,10 @@ async def get_product_data(p_name, market, org_id):
     )
 
 
-@router.get("/{org_id}/{market}", response_description="Products retrieved")
-async def get_products(market, org_id):
-    products = load_from_db_2(market, org_id)
+@router.get("/{env}/{org_id}/{market}", response_description="Products retrieved")
+async def get_products(env, market, org_id):
+    validate_env(env)
+    products = load_from_db_2(env, market, org_id)
     if products:
         return {
             "data": products,
