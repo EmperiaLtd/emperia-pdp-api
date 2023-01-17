@@ -3,7 +3,7 @@
 variable "region" {
   description = "AWS region for all resources."
   type        = string
-  default     = "us-east-1"
+  default     = "eu-west-2"
 }
 
 variable "env_aws_access_key" {

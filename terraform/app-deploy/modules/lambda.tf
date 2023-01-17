@@ -1,13 +1,9 @@
-provider "aws" {
-  region  = var.region
-  profile = "default"
-}
-
 data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 locals {
   prefix              = "emperia-pdp"
-  root_dir            = "../.."
+  root_dir            = "../../.."
   app_dir             = "${local.root_dir}/app"
   account_id          = data.aws_caller_identity.current.account_id
   ecr_repository_name = "${local.prefix}-lambda-container-${local.stage}"
@@ -36,7 +32,7 @@ resource "null_resource" "ecr_image" {
 
   provisioner "local-exec" {
     command = <<EOF
-            aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${local.account_id}.dkr.ecr.${var.region}.amazonaws.com
+            aws ecr get-login-password --region ${data.aws_region.current.name} | docker login --username AWS --password-stdin ${local.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com
             cd ${path.module}/${local.root_dir}
             docker build -t ${aws_ecr_repository.repo.repository_url}:${local.ecr_image_tag} . -f Dockerfile.aws.lambda
             docker push ${aws_ecr_repository.repo.repository_url}:${local.ecr_image_tag}
