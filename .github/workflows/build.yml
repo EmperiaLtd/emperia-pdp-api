@@ -53,4 +53,4 @@ jobs:
           terraform init
           terraform workspace select ${GITHUB_REF##*/} || terraform workspace new ${GITHUB_REF##*/}
           terraform plan
-          terraform apply -auto-approve
+          terraform destroy -auto-approve
