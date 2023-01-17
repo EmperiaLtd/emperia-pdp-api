@@ -27,11 +27,6 @@ resource "aws_iam_role" "lambda" {
     EOF
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_policy" {
-  role       = aws_iam_role.lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
 data "aws_iam_policy_document" "lambda" {
   statement {
     actions = [
@@ -78,4 +73,9 @@ resource "aws_iam_policy" "lambda" {
   name   = "${local.prefix}-lambda-policy-${local.stage}"
   path   = "/"
   policy = data.aws_iam_policy_document.lambda.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy" {
+  role       = aws_iam_role.lambda.name
+  policy_arn = aws_iam_policy.lambda.arn
 }
