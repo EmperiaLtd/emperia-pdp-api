@@ -86,10 +86,6 @@ variable "db_port_prod" {
   default     = "15651"
 }
 
-variable "iam_role_lambda_arn" {
-  description = "arn of iam role for lambda"
-}
-
 locals {
   stage                = "development"
   authorization_issuer =  terraform.workspace == "production" ? var.prod_authorization_issuer : (terraform.workspace == "staging" ? var.staging_authorization_issuer : var.development_authorization_issuer)

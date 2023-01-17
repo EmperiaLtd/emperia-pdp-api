@@ -48,76 +48,13 @@ data "aws_ecr_image" "lambda_image" {
   image_tag       = local.ecr_image_tag
 }
 
-resource "aws_iam_role" "lambda" {
-  name               = "${local.prefix}-lambda-role-${local.stage}"
-  assume_role_policy = <<EOF
-{
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Action": "sts:AssumeRole",
-                "Principal": {
-                    "Service": "lambda.amazonaws.com"
-                },
-                "Effect": "Allow"
-            }
-        ]
-}
-    EOF
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_policy" {
-  role       = aws_iam_role.lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
-data "aws_iam_policy_document" "lambda" {
-  statement {
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-    effect    = "Allow"
-    resources = ["*"]
-    sid       = "CreateCloudWatchLogs"
-  }
-
-  statement {
-    actions = [
-      "codecommit:GitPull",
-      "codecommit:GitPush",
-      "codecommit:GitBranch",
-      "codecommit:ListBranches",
-      "codecommit:CreateCommit",
-      "codecommit:GetCommit",
-      "codecommit:GetCommitHistory",
-      "codecommit:GetDifferences",
-      "codecommit:GetReferences",
-      "codecommit:BatchGetCommits",
-      "codecommit:GetTree",
-      "codecommit:GetObjectIdentifier",
-      "codecommit:GetMergeCommit"
-    ]
-    effect    = "Allow"
-    resources = ["*"]
-    sid       = "CodeCommit"
-  }
-}
-
-resource "aws_iam_policy" "lambda" {
-  name   = "${local.prefix}-lambda-policy-${local.stage}"
-  path   = "/"
-  policy = data.aws_iam_policy_document.lambda.json
-}
-
 resource "aws_lambda_function" "emperia-pdp-lambda-function" {
   depends_on = [
     null_resource.ecr_image
   ]
 
   function_name = "${local.prefix}-lambda-${local.stage}"
-  role          = aws_iam_role.lambda.arn
+  role          = var.iam_role_lambda_arn
   timeout       = 30
   image_uri     = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   package_type  = "Image"
