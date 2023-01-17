@@ -64,6 +64,14 @@ data "aws_iam_policy_document" "lambda" {
     resources = ["*"]
     sid       = "CodeCommit"
   }
+  statement {
+    actions = [
+      "ssm:GetParameter"
+    ]
+    effect    = "Allow"
+    resources = ["*"]
+    sid       = "ReadParameters"
+  }
 }
 
 resource "aws_iam_policy" "lambda" {
