@@ -3,7 +3,7 @@ data "aws_region" "current" {}
 
 locals {
   prefix              = "emperia-pdp"
-  root_dir            = "../../.."
+  root_dir            = "../.."
   app_dir             = "${local.root_dir}/app"
   account_id          = data.aws_caller_identity.current.account_id
   ecr_repository_name = "${local.prefix}-lambda-container-${local.stage}"
