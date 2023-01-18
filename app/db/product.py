@@ -28,7 +28,7 @@ def getParameterFromAWS(key: str) -> str:
     except Exception:
         raise HTTPException(
             status.HTTP_500_INTERNAL_SERVER_ERROR,
-            "Exception in getting DB credentials from AWS",
+            f"Exception in getting DB credentials from AWS {key}",
         )
 
 
