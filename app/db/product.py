@@ -7,8 +7,6 @@ from fastapi import HTTPException, status
 
 import app.db.database as db
 
-# product_collection = database.get_collection("Product_collection")
-
 
 def connect_to_db(org_id: str, env: str):
     org_id = org_id.lower
