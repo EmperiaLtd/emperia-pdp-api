@@ -1,6 +1,5 @@
 import io
 import json
-import os
 
 import boto3
 import pandas as pd
@@ -11,26 +10,26 @@ import app.db.database as db
 # product_collection = database.get_collection("Product_collection")
 
 
-def connect_to_db(env: str):
-    host_key: str = "db_host_prod"
-    password_key: str = "db_password_prod"
-    port_key: str = "db_port_prod"
-    if env == "dev":
-        host_key = "db_host_dev"
-        password_key = "db_password_dev"
-        port_key = "db_port_dev"
-
-    host = getParameterFromAWS(os.getenv(host_key))
-    password = getParameterFromAWS(os.getenv(password_key))
-    db_port = getParameterFromAWS(os.getenv(port_key))
+def connect_to_db(org_id: str, env: str):
+    org_id = org_id.lower
+    host = getParameterFromAWS(f"/{org_id}/db/{env}/endpoint")
+    password = getParameterFromAWS(f"/{org_id}/db/{env}/password")
+    db_port = getParameterFromAWS(f"/{org_id}/db/{env}/port")
     db.connect_to_DB(host, db_port, password)
 
 
 def getParameterFromAWS(key: str) -> str:
-    ssm_client = boto3.client(service_name="ssm")
-    return ssm_client.get_parameter(Name=key, WithDecryption=True)["Parameter"][
-        "Value"
-    ]  # noqa
+    # db credentials parameter format must be like this {org_id}/db/{env}/endpoint
+    try:
+        ssm_client = boto3.client(service_name="ssm")
+        return ssm_client.get_parameter(Name=key, WithDecryption=True)["Parameter"][
+            "Value"
+        ]  # noqa
+    except Exception:
+        raise HTTPException(
+            status.HTTP_500_INTERNAL_SERVER_ERROR,
+            "Exception in getting DB credentials from AWS",
+        )
 
 
 def market_name(org_id, market, pid):
@@ -214,7 +213,7 @@ def check_csv(org_id, market, p_name):
 
 def load_from_db(env: str, p_name: str, market: str, org_id: str, solid: str):
     p_id_2 = solid  # f"{org_id}_{market}_{p_name}"
-    connect_to_db(env)
+    connect_to_db(org_id, env)
     db_Obj = db.redis.get(p_id_2)  # get the pid from database
     if db_Obj is None:
         product_data = check_csv(org_id, market, p_name)
@@ -227,7 +226,7 @@ def load_from_db(env: str, p_name: str, market: str, org_id: str, solid: str):
 
 def load_from_db_2(env: str, market, org_id):
     Market_2 = f"{org_id}_{market}_*"  # get the market from database
-    connect_to_db(env)
+    connect_to_db(org_id, env)
     db_Obj_2 = db.redis.get(Market_2)
     if db_Obj_2 is None:
         return None
