@@ -64,12 +64,6 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
       stage_name                    = local.stage
       env_aws_access_key            = var.env_aws_access_key
       env_aws_secret_access_key     = var.env_aws_secret_access_key
-      db_host_dev                   = var.db_host_dev
-      db_password_dev               = var.db_password_dev
-      db_port_dev                   = var.db_port_dev
-      db_host_prod                  = var.db_host_prod
-      db_password_prod              = var.db_password_prod
-      db_port_prod                  = var.db_port_prod
     }
   }
 }

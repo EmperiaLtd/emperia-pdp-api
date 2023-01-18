@@ -41,12 +41,6 @@ jobs:
           AWS_DEFAULT_REGION: "eu-west-2"
           TF_VAR_env_aws_access_key: ${{ secrets.ENV_AWS_ACCESS_KEY }}
           TF_VAR_env_aws_secret_access_key: ${{ secrets.ENV_AWS_SECRET_ACCESS_KEY }}
-          TF_VAR_db_host_prod: "/saxx/db/prod/endpoint"
-          TF_VAR_db_password_prod: "/saxx/db/prod/password"
-          TF_VAR_db_port_prod: "/saxx/db/prod/port"
-          TF_VAR_db_host_dev: "/saxx/db/dev/endpoint"
-          TF_VAR_db_password_dev: "/saxx/db/dev/password"
-          TF_VAR_db_port_dev: "/saxx/db/dev/port"
         run: |
           find . -name '*.pyc' -delete
           cd terraform/app-deploy

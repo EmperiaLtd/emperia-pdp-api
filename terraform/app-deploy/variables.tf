@@ -50,42 +50,6 @@ variable "prod_authorization_issuer"{
   default = "https://emperia-pdp-jwt-authorizer-production"
 }
 
-variable "db_host_dev" {
-  description = "Host URL of database"
-  type        = string
-  default     = "/csv_parsing/saxx/db_endpoint"
-}
-
-variable "db_password_dev" {
-  description = "Password of database"
-  type        = string
-  default     = "/csv_parsing/saxx/db_auth"
-}
-
-variable "db_port_dev" {
-  description = "Port of database"
-  type        = string
-  default     = "15651"
-}
-
-variable "db_host_prod" {
-  description = "Host URL of database"
-  type        = string
-  default     = "/csv_parsing/saxx/db_endpoint"
-}
-
-variable "db_password_prod" {
-  description = "Password of database"
-  type        = string
-  default     = "/csv_parsing/saxx/db_auth"
-}
-
-variable "db_port_prod" {
-  description = "Port of database"
-  type        = string
-  default     = "15651"
-}
-
 locals {
   stage                = "development"
   authorization_issuer =  terraform.workspace == "production" ? var.prod_authorization_issuer : (terraform.workspace == "staging" ? var.staging_authorization_issuer : var.development_authorization_issuer)
