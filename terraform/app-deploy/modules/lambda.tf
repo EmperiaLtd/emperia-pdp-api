@@ -22,7 +22,7 @@ resource "aws_ecr_repository" "repo" {
 
 resource "null_resource" "ecr_image" {
   triggers = {
-    dir_md5     = md5(join("", [for f in fileset("${path.module}/${local.app_dir}", "**") : filebase64("${f}")]))
+    dir_md5     = md5(join("", [for f in fileset("${path.module}/${local.app_dir}", "**") : filebase64("${path.module}/${local.app_dir}/${f}")]))
     docker_file = md5(filebase64("${path.module}/${local.root_dir}/Dockerfile.aws.lambda"))
   }
 
