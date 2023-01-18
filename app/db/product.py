@@ -220,8 +220,10 @@ def load_from_db(env: str, p_name: str, market: str, org_id: str, solid: str):
         product_json = json.dumps(product_data)
         db.redis.set(solid, product_json)
         return product_data
-    json_data = json.loads(db_Obj.encode("utf-8"))
-    return json_data
+    elif db_Obj:
+        json_data = json.loads(db_Obj.encode("utf-8"))
+        return json_data
+    return None
 
 
 def load_from_db_2(env: str, market, org_id):
