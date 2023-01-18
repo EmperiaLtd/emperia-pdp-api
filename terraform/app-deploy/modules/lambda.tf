@@ -3,7 +3,7 @@ data "aws_region" "current" {}
 
 locals {
   prefix              = "emperia-pdp"
-  root_dir            = "../.."
+  root_dir            = "../../.."
   app_dir             = "${local.root_dir}/app"
   account_id          = data.aws_caller_identity.current.account_id
   ecr_repository_name = "${local.prefix}-lambda-container-${local.stage}"
@@ -23,7 +23,7 @@ resource "aws_ecr_repository" "repo" {
 resource "null_resource" "ecr_image" {
   triggers = {
     dir_md5     = md5(join("", [for f in fileset("${local.app_dir}", "**") : filebase64("${local.app_dir}/${f}")]))
-    docker_file = md5(filebase64("${path.module}/${local.root_dir}/../Dockerfile.aws.lambda"))
+    docker_file = md5(filebase64("${path.module}/${local.root_dir}/Dockerfile.aws.lambda"))
   }
 
   # The local-exec provisioner invokes a local executable after a resource iss created.
