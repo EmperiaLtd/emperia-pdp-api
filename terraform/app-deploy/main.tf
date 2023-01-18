@@ -18,6 +18,9 @@ module "us-east-1" {
   }
   env_aws_access_key = var.env_aws_access_key
   env_aws_secret_access_key = var.env_aws_secret_access_key
+  AWS_ACCESS_KEY_ID = var.env_aws_access_key
+  AWS_SECRET_ACCESS_KEY = var.env_aws_secret_access_key
+  AWS_DEFAULT_REGION = "us-east-1"
   app_version = var.app_version
   s3_bucket_name = var.s3_bucket_name
   backend_remote_state_s3_bucket = var.backend_remote_state_s3_bucket
@@ -34,6 +37,9 @@ module "eu-west-2" {
   providers = {
     aws = aws
   }
+  AWS_ACCESS_KEY_ID = var.env_aws_access_key
+  AWS_SECRET_ACCESS_KEY = var.env_aws_secret_access_key
+  AWS_DEFAULT_REGION = "eu-west-2"
   env_aws_access_key = var.env_aws_access_key
   env_aws_secret_access_key = var.env_aws_secret_access_key
   app_version = var.app_version
