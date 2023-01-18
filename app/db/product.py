@@ -215,7 +215,7 @@ def load_from_db(env: str, p_name: str, market: str, org_id: str, solid: str):
     p_id_2 = solid  # f"{org_id}_{market}_{p_name}"
     connect_to_db(org_id, env)
     db_Obj = db.redis.get(p_id_2)  # get the pid from database
-    if db_Obj is None:
+    if db_Obj is None and org_id == "Saxx":
         product_data = check_csv(org_id, market, p_name)
         product_json = json.dumps(product_data)
         db.redis.set(solid, product_json)
