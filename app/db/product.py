@@ -9,7 +9,7 @@ import app.db.database as db
 
 
 def connect_to_db(org_id: str, env: str):
-    org_id = org_id.lower
+    org_id = org_id.lower()
     host = getParameterFromAWS(f"/{org_id}/db/{env}/endpoint")
     password = getParameterFromAWS(f"/{org_id}/db/{env}/password")
     db_port = getParameterFromAWS(f"/{org_id}/db/{env}/port")
