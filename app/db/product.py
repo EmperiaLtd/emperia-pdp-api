@@ -25,10 +25,10 @@ def getParameterFromAWS(key: str) -> str:
         return ssm_client.get_parameter(Name=key, WithDecryption=True)["Parameter"][
             "Value"
         ]  # noqa
-    except Exception:
+    except Exception as e:
         raise HTTPException(
             status.HTTP_500_INTERNAL_SERVER_ERROR,
-            f"Exception in getting DB credentials from AWS {key}",
+            f"Exception in getting DB credentials from AWS {key} " + str(e),
         )
 
 
