@@ -47,7 +47,7 @@ module "api_gateway_module_eu-west-2" {
    stage = "development"
 }
 module "eu-west-2" {
-  source = "./module/lambda_module"
+  source = "./modules/lambda_module"
   providers = {
     aws = aws.eu-west-2
   }
