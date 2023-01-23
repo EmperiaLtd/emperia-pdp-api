@@ -1,5 +1,5 @@
 resource "aws_apigatewayv2_api" "emperia-pdp-gateway" {
-  name          = "emperiapdpapigateway-${local.stage}"
+  name          = "emperiapdpapigateway-${var.stage}"
   protocol_type = "HTTP"
 
   cors_configuration {
@@ -26,7 +26,7 @@ resource "aws_apigatewayv2_authorizer" "emperia-pdp-gateway" {
  api_id           = aws_apigatewayv2_api.emperia-pdp-gateway.id
  authorizer_type  = "JWT"
  identity_sources = ["$request.header.Authorization"]
- name             = "emperia-pdp-authorizer-${local.stage}"
+ name             = "emperia-pdp-authorizer-${var.stage}"
 
  jwt_configuration {
    audience = [local.authorization_audience]

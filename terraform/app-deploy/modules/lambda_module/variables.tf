@@ -54,6 +54,10 @@ variable "iam_role_lambda_arn" {
   description = "arn of iam role for lambda"
 }
 
+variable "api_gateway_execution_arn" {
+  description = "execution arn of api gateway for lambda"
+}
+
 locals {
   stage                = "development"
   authorization_issuer =  terraform.workspace == "production" ? var.prod_authorization_issuer : (terraform.workspace == "staging" ? var.staging_authorization_issuer : var.development_authorization_issuer)

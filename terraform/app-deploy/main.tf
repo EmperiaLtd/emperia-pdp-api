@@ -1,7 +1,7 @@
 module "iam_module" {
-  source = "./iam_module"
+  source = "./modules/iam_module"
   providers = {
-    aws = aws
+    aws = aws.eu-west-2
   }
   development_authorization_issuer = var.development_authorization_issuer
   staging_authorization_issuer = var.staging_authorization_issuer
@@ -11,8 +11,16 @@ module "iam_module" {
   prod_authorization_audience = var.prod_authorization_audience
 }
 
+module "api_gateway_module_us-east-1" {
+  source = "./modules/api_gateway_module"
+  providers = {
+    aws = aws.us-east-1
+   }
+   stage = "development"
+}
+
 module "us-east-1" {
-  source = "./modules"
+  source = "./modules/lambda_module"
   providers = {
     aws = aws.us-east-1
   }
@@ -28,11 +36,20 @@ module "us-east-1" {
   staging_authorization_audience = var.staging_authorization_audience
   prod_authorization_audience = var.prod_authorization_audience
   iam_role_lambda_arn = module.iam_module.iam_role_lambda_arn
+  api_gateway_execution_arn = module.api_gateway_module_us-east-1.api_gateway_execution_arn
+}
+
+module "api_gateway_module_eu-west-2" {
+  source = "./modules/api_gateway_module"
+  providers = {
+    aws = aws.eu-west-2
+   }
+   stage = "development"
 }
 module "eu-west-2" {
-  source = "./modules"
+  source = "./module/lambda_module"
   providers = {
-    aws = aws
+    aws = aws.eu-west-2
   }
   env_aws_access_key = var.env_aws_access_key
   env_aws_secret_access_key = var.env_aws_secret_access_key
@@ -46,4 +63,5 @@ module "eu-west-2" {
   staging_authorization_audience = var.staging_authorization_audience
   prod_authorization_audience = var.prod_authorization_audience
   iam_role_lambda_arn = module.iam_module.iam_role_lambda_arn
+  api_gateway_execution_arn = module.api_gateway_module_eu-west-2.api_gateway_execution_arn
 }
