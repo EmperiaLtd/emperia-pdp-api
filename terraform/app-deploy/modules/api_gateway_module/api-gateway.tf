@@ -14,7 +14,7 @@ resource "aws_apigatewayv2_api" "emperia-pdp-gateway" {
 
 resource "aws_apigatewayv2_stage" "emperia-pdp-gateway" {
   api_id      = aws_apigatewayv2_api.emperia-pdp-gateway.id
-  name        = local.stage
+  name        = var.stage
   auto_deploy = true
 
   default_route_settings {
@@ -29,51 +29,7 @@ resource "aws_apigatewayv2_authorizer" "emperia-pdp-gateway" {
  name             = "emperia-pdp-authorizer-${var.stage}"
 
  jwt_configuration {
-   audience = [local.authorization_audience]
-   issuer   = local.authorization_issuer
+   audience = [var.authorization_audience]
+   issuer   = var.authorization_issuer
  }
-}
-
-resource "aws_apigatewayv2_integration" "emperia-pdp-integration" {
-  api_id           = aws_apigatewayv2_api.emperia-pdp-gateway.id
-  integration_type = "AWS_PROXY"
-
-  connection_type        = "INTERNET"
-  integration_method     = "POST"
-  integration_uri        = aws_lambda_function.emperia-pdp-lambda-function.invoke_arn
-  payload_format_version = "2.0"
-}
-resource "aws_apigatewayv2_route" "emperia-pdp-api-get-route" {
-  api_id             = aws_apigatewayv2_api.emperia-pdp-gateway.id
-  route_key          = "GET /api/{proxy+}"
-  authorization_type = "NONE"
-  # authorizer_id      = aws_apigatewayv2_authorizer.emperia-pdp-gateway.id
-  target             = "integrations/${aws_apigatewayv2_integration.emperia-pdp-integration.id}"
-}
-resource "aws_apigatewayv2_route" "emperia-pdp-docs-route" {
-  api_id             = aws_apigatewayv2_api.emperia-pdp-gateway.id
-  route_key          = "GET /docs"
-  authorization_type = "NONE"
-  target             = "integrations/${aws_apigatewayv2_integration.emperia-pdp-integration.id}"
-}
-
-resource "aws_apigatewayv2_route" "emperia-pdp-redoc-route" {
-  api_id             = aws_apigatewayv2_api.emperia-pdp-gateway.id
-  route_key          = "GET /redoc"
-  authorization_type = "NONE"
-  target             = "integrations/${aws_apigatewayv2_integration.emperia-pdp-integration.id}"
-}
-
-resource "aws_apigatewayv2_route" "emperia-pdp-openapi-route" {
-  api_id             = aws_apigatewayv2_api.emperia-pdp-gateway.id
-  route_key          = "GET /openapi.json"
-  authorization_type = "NONE"
-  target             = "integrations/${aws_apigatewayv2_integration.emperia-pdp-integration.id}"
-}
-
-resource "aws_apigatewayv2_route" "emperia-pdp-credit-route" {
-  api_id             = aws_apigatewayv2_api.emperia-pdp-gateway.id
-  route_key          = "POST /webhook/credit/{proxy+}"
-  authorization_type = "NONE"
-  target             = "integrations/${aws_apigatewayv2_integration.emperia-pdp-integration.id}"
 }

@@ -1,11 +1,12 @@
 data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
 
 locals {
   prefix              = "emperia-pdp"
   root_dir            = "../../../.."
   app_dir             = "${local.root_dir}/app"
   account_id          = data.aws_caller_identity.current.account_id
-  ecr_repository_name = "${local.prefix}-lambda-container-${local.stage}"
+  ecr_repository_name = "${local.prefix}-lambda-container-${var.stage}"
   ecr_image_tag       = "latest"
 }
 
@@ -49,7 +50,7 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
     null_resource.ecr_image
   ]
 
-  function_name = "${local.prefix}-lambda-${local.stage}"
+  function_name = "${local.prefix}-lambda-${var.stage}"
   role          = var.iam_role_lambda_arn
   timeout       = 30
   image_uri     = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
@@ -57,9 +58,7 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
 
   environment {
     variables = {
-      stage_name                    = local.stage
-      env_aws_access_key            = var.env_aws_access_key
-      env_aws_secret_access_key     = var.env_aws_secret_access_key
+      stage_name                    = var.stage
     }
   }
 }
@@ -68,15 +67,4 @@ resource "aws_cloudwatch_log_group" "emperia-pdp" {
   name = "/aws/lambda/${aws_lambda_function.emperia-pdp-lambda-function.function_name}"
 
   retention_in_days = 30
-}
-
-resource "aws_lambda_permission" "apigw" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.emperia-pdp-lambda-function.arn
-  principal     = "apigateway.amazonaws.com"
-
-  # The "/*/*" portion grants access from any method on any resource
-  # within the API Gateway REST API
-  source_arn = "${aws_apigatewayv2_api.emperia-pdp-gateway.execution_arn}/*/*"
 }
