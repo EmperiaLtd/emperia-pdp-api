@@ -31,7 +31,7 @@ resource "aws_apigatewayv2_route" "emperia-pdp-api-get-route" {
 }
 resource "aws_apigatewayv2_route" "emperia-pdp-docs-route" {
     depends_on = [
-      aws_apigatewayv2_route.emperia-pdp-get-route
+      aws_apigatewayv2_route.emperia-pdp-api-get-route
     ]
     api_id             = var.api_gateway_id
     route_key          = "GET /docs"
