@@ -36,19 +36,17 @@ def test_get_product_data_exists():
     org_id = "Saxx"
     market = "INT"
     product_id = "121212121"
-    os.environ["db_host"] = "/saxx/db/endpoint"
-    os.environ["db_password"] = "/saxx/db/password"
-    os.environ["db_port"] = "/saxx/db/port"
+    env = "dev"
     dirpath = os.path.dirname(__file__)
     expected_data_file = open(
         os.path.join(dirpath, "resources", "expected_response_data.json")
     )
     expected_status_code = 200
     expected_data = json.load(expected_data_file)
-    connect_to_db()
+    connect_to_db(org_id, env)
     dump_product_to_db(product_id, expected_data, market, org_id)
 
-    response = client.get(f"api/product/{org_id}/{market}/{product_id}")
+    response = client.get(f"api/product/{env}/{org_id}/{market}/{product_id}")
 
     assert response.status_code == expected_status_code
     assert response.json()["data"] == expected_data
@@ -60,14 +58,11 @@ def test_get_product_data_not_exists():
     org_id = "Saxx"
     market = "US"
     product_id = "6743322198107"  # Invalid Product Id
-    os.environ["db_host"] = "/saxx/db/endpoint"
-    os.environ["db_password"] = "/saxx/db/password"
-    os.environ["db_port"] = "/saxx/db/port"
-
+    env = "dev"
     expected_status_code = 404
     expected_message = '{"detail":"Product doesn\'t exist."}'
 
-    response = client.get(f"api/product/{org_id}/{market}/{product_id}")
+    response = client.get(f"api/product/{env}/{org_id}/{market}/{product_id}")
 
     assert response.status_code == expected_status_code
     assert response.text == expected_message
@@ -77,14 +72,12 @@ def test_get_product_data_invalid_market():
     org_id = "Saxx"
     market = "SP"  # Invalid Market
     product_id = "6775348068433"
-    os.environ["db_host"] = "/saxx/db/endpoint"
-    os.environ["db_password"] = "/saxx/db/password"
-    os.environ["db_port"] = "/saxx/db/port"
+    env = "dev"
 
     expected_status_code = 404
-    expected_message = '{"detail":"Unsupported Market."}'
+    expected_message = '{"detail":"Product doesn\'t exist."}'
 
-    response = client.get(f"api/product/{org_id}/{market}/{product_id}")
+    response = client.get(f"api/product/{env}/{org_id}/{market}/{product_id}")
 
     assert response.status_code == expected_status_code
     assert response.text == expected_message
