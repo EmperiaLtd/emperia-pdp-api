@@ -1,17 +1,16 @@
 import json
-import os
 
 import boto3
+from fastapi import HTTPException, status
 
 import app.db.database as db
 
-# product_collection = database.get_collection("Product_collection")
 
-
-def connect_to_db():
-    host = getParameterFromAWS(os.getenv("db_host"))
-    password = getParameterFromAWS(os.getenv("db_password"))
-    db_port = getParameterFromAWS(os.getenv("db_port"))
+def connect_to_db(org_id: str, env: str):
+    org_id = org_id.lower()
+    host = getParameterFromAWS(f"/{org_id}/db/{env}/endpoint")
+    password = getParameterFromAWS(f"/{org_id}/db/{env}/password")
+    db_port = getParameterFromAWS(f"/{org_id}/db/{env}/port")
     db.connect_to_DB(host, db_port, password)
 
 
@@ -25,23 +24,33 @@ def remove_product_from_db(id, market, client):
 
 
 def getParameterFromAWS(key: str) -> str:
-    ssm_client = boto3.client(service_name="ssm")
-    return ssm_client.get_parameter(Name=key, WithDecryption=True)["Parameter"][
-        "Value"
-    ]  # noqa
+    # db credentials parameter format must be like this {org_id}/db/{env}/endpoint
+    try:
+        ssm_client = boto3.client(service_name="ssm")
+        return ssm_client.get_parameter(Name=key, WithDecryption=True)["Parameter"][
+            "Value"
+        ]  # noqa
+    except Exception as e:
+        raise HTTPException(
+            status.HTTP_500_INTERNAL_SERVER_ERROR,
+            f"Exception in getting DB credentials from AWS {key} " + str(e),
+        )
 
 
 def create_solid(org_id, market, pid):
     if market == "US" or market == "us":
-        return f"{org_id}_US_{pid}"
-    if market == "CA" or market == "ca":
-        return f"{org_id}_UK_{pid}"
-    if market == "INT" or market == "int":
-        return f"{org_id}_INT_{pid}"
+        string = f"{org_id}_US_{pid}"
+    elif market == "CA" or market == "ca":
+        string = f"{org_id}_CA_{pid}"
+    elif market == "INT" or market == "int":
+        string = f"{org_id}_INT_{pid}"
+    else:
+        string = f"{org_id}_{market}_{pid}"
+    return string
 
 
-def load_from_db(solid):
-    connect_to_db()
+def load_from_db(solid, org_id, env):
+    connect_to_db(org_id, env)
     print("getting solid", solid)
     db_Obj = db.redis.get(solid)  # f"{org_id}_{market}_{pid}"
     if db_Obj:
@@ -53,3 +62,11 @@ def get_markets_by_org_id(org_id):
     if org_id == "Saxx":
         market = ["CA", "INT", "US"]
         return market
+
+
+def validate_env(env: str):
+    if env != "dev" and env != "prod":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Please provide a valid environment 'dev' or 'prod'",
+        )
