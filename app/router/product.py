@@ -4,6 +4,7 @@ from app.db.product import (
     create_solid,
     get_markets_by_org_id,
     load_from_db,
+    load_pattern_from_db,
     validate_env,
 )
 
@@ -38,8 +39,8 @@ async def get_product_data(env, p_name, market, org_id):
 @router.get("/{env}/{org_id}/{market}", response_description="Products retrieved")
 async def get_products(env, market, org_id):
     validate_env(env)
-    solid = f"{org_id}_{market}"
-    products = load_from_db(solid, org_id, env)
+    solid = f"{org_id}_{market}*"
+    products = load_pattern_from_db(solid, org_id, env)
     if products:
         return {
             "data": products,

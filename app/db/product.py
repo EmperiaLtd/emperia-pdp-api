@@ -58,6 +58,17 @@ def load_from_db(solid, org_id, env):
         return json_data
 
 
+def load_pattern_from_db(solid, org_id, env):
+    connect_to_db(org_id, env)
+    print("getting solid", solid)
+    keys = db.redis.keys(solid)
+    products_response = db.redis.mget(keys)
+    products = []
+    for product in products_response:
+        products.append(json.loads(product.encode("utf-8")))
+    return products
+
+
 def get_markets_by_org_id(org_id):
     if org_id == "Saxx":
         market = ["CA", "INT", "US"]
