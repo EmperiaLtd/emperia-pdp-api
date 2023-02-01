@@ -11,6 +11,6 @@ RUN pip install -r requirements.txt
 
 COPY ./app ./app
 
-COPY ./fallback_locales.csv /app/
+COPY ./fallback_locales.csv ./fallback_locales.csv
 
 CMD ["app.main.handler"]
