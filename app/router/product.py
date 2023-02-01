@@ -1,9 +1,8 @@
 from fastapi import APIRouter, HTTPException, status
 
 from app.db.product import (
-    create_solid,
+    connect_and_load_from_db,
     get_markets_by_org_id,
-    load_from_db,
     load_pattern_from_db,
     validate_env,
 )
@@ -16,23 +15,17 @@ router = APIRouter()
 )
 async def get_product_data(env, p_name, market, org_id):
     p_name = p_name.lower()
-    solid = create_solid(org_id, market, p_name)  # {org_id}_{market}_{pid}
     validate_env(env)
-    if solid:
-        product = load_from_db(solid, org_id, env)
-        if product:
-            return {
-                "data": product,
-                "status": 200,
-                "message": "Products data retrieved successfully",
-            }
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Product doesn't exist."
-            )
+    product = connect_and_load_from_db(org_id, market, p_name, env)
+    if product:
+        return {
+            "data": product,
+            "status": 200,
+            "message": "Products data retrieved successfully",
+        }
     else:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Unsupported Market."
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product doesn't exist."
         )
 
 

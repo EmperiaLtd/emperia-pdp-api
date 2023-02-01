@@ -1,6 +1,7 @@
 import json
 
 import boto3
+import pandas as pd
 from fastapi import HTTPException, status
 
 import app.db.database as db
@@ -49,13 +50,32 @@ def create_solid(org_id, market, pid):
     return string
 
 
-def load_from_db(solid, org_id, env):
+def connect_and_load_from_db(org_id, market, p_name, env):
     connect_to_db(org_id, env)
+    return load_from_db(org_id, market, p_name)
+
+
+def load_from_db(org_id, market, p_name):
+    solid = create_solid(org_id, market, p_name)
     print("getting solid", solid)
     db_Obj = db.redis.get(solid)  # f"{org_id}_{market}_{pid}"
     if db_Obj:
         json_data = json.loads(db_Obj.encode("utf-8"))
         return json_data
+    else:
+        return check_for_fall_back(org_id, market, p_name)
+
+
+def check_for_fall_back(org_id: str, market: str, p_name: str):
+    # fallback for pinko
+    if org_id == "Pinko":
+        data = read_csv_file("fallback_locales.csv")
+        for index, row in data.iterrows():
+            if (
+                row.locale.lower() == market.lower()
+                and row.locale.lower() != row.defaultfeedlocale.lower()
+            ):
+                return load_from_db(org_id, row.defaultfeedlocale.lower(), p_name)
 
 
 def load_pattern_from_db(solid, org_id, env):
@@ -81,3 +101,7 @@ def validate_env(env: str):
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Please provide a valid environment 'dev' or 'prod'",
         )
+
+
+def read_csv_file(path: str):
+    return pd.read_csv(path, header=0)
