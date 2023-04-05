@@ -17,7 +17,7 @@ def connect_to_db(org_id: str, env: str):
 
 def dump_product_to_db(id, product, market, client):
     product = json.dumps(product)
-    db.redis.set(f"{client}_{market}_{id}", product)
+    db.redis.json().set(f"{client}_{market}_{id}", "$", product)
 
 
 def remove_product_from_db(id, market, client):
