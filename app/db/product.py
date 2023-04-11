@@ -16,7 +16,6 @@ def connect_to_db(org_id: str, env: str):
 
 
 def dump_product_to_db(id, product, market, client):
-    product = json.dumps(product)
     db.redis.json().set(f"{client}_{market}_{id}", "$", product)
 
 
@@ -60,7 +59,7 @@ def load_from_db(org_id, market, p_key):
     print("getting solid", solid)
     db_Obj = db.redis.json().get(solid)  # f"{org_id}_{market}_{pid}"
     if db_Obj:
-        return json.loads(db_Obj)
+        return db_Obj
     else:
         return check_for_fall_back(org_id, market, p_key)
 
