@@ -60,8 +60,7 @@ def load_from_db(org_id, market, p_key):
     print("getting solid", solid)
     db_Obj = db.redis.json().get(solid)  # f"{org_id}_{market}_{pid}"
     if db_Obj:
-        json_data = json.loads(db_Obj.encode("utf-8"))
-        return json_data
+        return db_Obj
     else:
         return check_for_fall_back(org_id, market, p_key)
 
