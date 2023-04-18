@@ -59,4 +59,3 @@ jobs:
           if [ ${GITHUB_REF##*/} == "main" ]; then terraform workspace select main; else terraform workspace select develop; fi
           terraform plan
           if [ ${GITHUB_REF##*/} == "main" ] || [ ${GITHUB_REF##*/} == "develop" ]; then terraform apply -auto-approve ; else echo "please check your feature branch plan and merge to develop branch to perform terraform apply"; fi
-          #end 
