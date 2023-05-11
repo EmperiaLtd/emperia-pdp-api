@@ -1,5 +1,3 @@
-import json
-
 import boto3
 import pandas as pd
 from fastapi import HTTPException, status
@@ -82,14 +80,8 @@ def load_pattern_from_db(solid, org_id, env):
     # using scan here instead of keys to prevent DB blocking, results are same.
     products_response = []
     for key in db.redis.scan_iter(solid, 100):
-        print(key)
         products_response.append(db.redis.json().get(key))
-
-    # products_response = db.redis.mget(keys)
-    products = []
-    for product in products_response:
-        products.append(json.loads(product.encode("utf-8")))
-    return products
+    return products_response
 
 
 def get_markets_by_org_id(org_id):
