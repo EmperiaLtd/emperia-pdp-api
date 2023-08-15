@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/{env}/{org_id}/{market}/{p_name}", response_description="Product data retrieved"
+    "/{env}/{org_id}/{market}/{p_name}", response_description="Products data retrieved"
 )
 async def get_product_data(env, p_name, market, org_id):
     p_name = p_name.lower()
