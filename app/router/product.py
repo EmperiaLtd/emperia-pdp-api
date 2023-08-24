@@ -1,3 +1,5 @@
+import time
+
 from fastapi import APIRouter, HTTPException, status
 
 from app.db.product import (
@@ -14,10 +16,14 @@ router = APIRouter()
     "/{env}/{org_id}/{market}/{p_name}", response_description="Product data retrieved"
 )
 async def get_product_data(env, p_name, market, org_id):
+    begin = time.time()
     p_name = p_name.lower()
     validate_env(env)
     product = connect_and_load_from_db(org_id, market, p_name, env)
     if product:
+
+        end = time.time()
+        print(f"total time taken {end - begin}")
         return {
             "data": product,
             "status": 200,

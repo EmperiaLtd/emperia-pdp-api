@@ -1,3 +1,5 @@
+import time
+
 import boto3
 import pandas as pd
 from fastapi import HTTPException, status
@@ -7,10 +9,11 @@ import app.db.database as db
 
 def connect_to_db(org_id: str, env: str):
     org_id = org_id.lower()
-    host = getParameterFromAWS(f"/{org_id}/db/{env}/endpoint")
-    password = getParameterFromAWS(f"/{org_id}/db/{env}/password")
-    db_port = getParameterFromAWS(f"/{org_id}/db/{env}/port")
-    db.connect_to_DB(host, db_port, password)
+    host_key = f"/{org_id}/db/{env}/endpoint"
+    password_key = f"/{org_id}/db/{env}/password"
+    db_port_key = f"/{org_id}/db/{env}/port"
+    credentials = getParametersFromAWS([host_key, db_port_key, password_key])
+    db.connect_to_DB(credentials[0], credentials[2], credentials[1])
 
 
 def dump_product_to_db(id, product, market, client):
@@ -21,17 +24,18 @@ def remove_product_from_db(id, market, client):
     db.redis.delete(f"{client}_{market}_{id}")
 
 
-def getParameterFromAWS(key: str) -> str:
-    # db credentials parameter format must be like this {org_id}/db/{env}/endpoint
+def getParametersFromAWS(keys) -> list:
     try:
         ssm_client = boto3.client(service_name="ssm")
-        return ssm_client.get_parameter(Name=key, WithDecryption=True)["Parameter"][
-            "Value"
-        ]  # noqa
+        response = ssm_client.get_parameters(Names=keys, WithDecryption=True)
+        parameter_values = list(map(lambda r: r["Value"], response["Parameters"]))
+        print(parameter_values)
+        return parameter_values
     except Exception as e:
+        print(e)
         raise HTTPException(
-            status.HTTP_500_INTERNAL_SERVER_ERROR,
-            f"Exception in getting DB credentials from AWS {key} " + str(e),
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Exception in getting DB credentials from AWS {keys} " + str(e),
         )
 
 
@@ -48,8 +52,15 @@ def create_solid(org_id, market, p_key):
 
 
 def connect_and_load_from_db(org_id, market, p_key, env):
+    sc = time.time()
     connect_to_db(org_id, env)
-    return load_from_db(org_id, market, p_key)
+    ec = time.time()
+    print(f"connection time{ec - sc}")
+    sl = time.time()
+    response = load_from_db(org_id, market, p_key)
+    el = time.time()
+    print(f"load time{sl - el}")
+    return response
 
 
 def load_from_db(org_id, market, p_key):
