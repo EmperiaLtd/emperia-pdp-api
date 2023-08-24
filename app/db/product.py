@@ -12,8 +12,14 @@ def connect_to_db(org_id: str, env: str):
     host_key = f"/{org_id}/db/{env}/endpoint"
     password_key = f"/{org_id}/db/{env}/password"
     db_port_key = f"/{org_id}/db/{env}/port"
+    sa = time.time()
     credentials = getParametersFromAWS([host_key, db_port_key, password_key])
+    ea = time.time()
+    print(f"aws time {ea - sa}")
+    sr = time.time()
     db.connect_to_DB(credentials[0], credentials[2], credentials[1])
+    er = time.time()
+    print(f"redis time {er - sr}")
 
 
 def dump_product_to_db(id, product, market, client):
@@ -59,7 +65,7 @@ def connect_and_load_from_db(org_id, market, p_key, env):
     sl = time.time()
     response = load_from_db(org_id, market, p_key)
     el = time.time()
-    print(f"load time{sl - el}")
+    print(f"load time{el - sl}")
     return response
 
 
