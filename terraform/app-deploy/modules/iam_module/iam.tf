@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "lambda" {
   }
   statement {
     actions = [
-      "ssm:GetParameter"
+      "ssm:GetParameters"
     ]
     effect    = "Allow"
     resources = ["*"]
