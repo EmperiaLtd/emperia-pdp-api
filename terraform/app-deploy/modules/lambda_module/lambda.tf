@@ -55,12 +55,16 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
   timeout       = 30
   image_uri     = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   package_type  = "Image"
-  publish       = true
   environment {
     variables = {
       stage_name                    = var.stage
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "pdp-provisioned-concurrency" {
+  function_name                     = aws_lambda_function.emperia-pdp-lambda-function.function_name
+  provisioned_concurrent_executions = 1
 }
 
 resource "aws_cloudwatch_log_group" "emperia-pdp" {
