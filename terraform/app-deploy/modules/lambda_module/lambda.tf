@@ -62,8 +62,15 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
   }
 }
 
+resource "aws_lambda_alias" "pdp-lambda_alias" {
+  name             = "example-alias"
+  function_name    = aws_lambda_function.emperia-pdp-lambda-function.function_name
+  function_version = aws_lambda_function.emperia-pdp-lambda-function.version
+}
+
 resource "aws_lambda_provisioned_concurrency_config" "pdp-provisioned-concurrency" {
   function_name                     = aws_lambda_function.emperia-pdp-lambda-function.function_name
+  qualifier                         = aws_lambda_alias.pdp-lambda_alias.name
   provisioned_concurrent_executions = 1
 }
 
