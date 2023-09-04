@@ -63,7 +63,7 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
 }
 
 resource "aws_lambda_alias" "pdp-lambda_alias" {
-  name             = "example-alias"
+  name             = "latest-alias"
   function_name    = aws_lambda_function.emperia-pdp-lambda-function.function_name
   function_version = aws_lambda_function.emperia-pdp-lambda-function.version
 }
