@@ -53,6 +53,8 @@ def create_solid(org_id, market, p_key):
             string = f"{org_id}_CA_{p_key}"
         elif market == "INT" or market == "int":
             string = f"{org_id}_INT_{p_key}"
+        else:
+            string = None
     else:
         string = f"{org_id}_{market}_{p_key}"
     return string
@@ -72,12 +74,18 @@ def connect_and_load_from_db(org_id, market, p_key, env):
 
 def load_from_db(org_id, market, p_key):
     solid = create_solid(org_id, market, p_key)
-    print("getting solid", solid)
-    db_Obj = db.redis.json().get(solid)  # f"{org_id}_{market}_{pid}"
-    if db_Obj:
-        return db_Obj
+    if solid:
+        print("getting solid", solid)
+        db_Obj = db.redis.json().get(solid)  # f"{org_id}_{market}_{pid}"
+        if db_Obj:
+            return db_Obj
+        else:
+            return check_for_fall_back(org_id, market, p_key)
     else:
-        return check_for_fall_back(org_id, market, p_key)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Invalid market details",
+        )
 
 
 def check_for_fall_back(org_id: str, market: str, p_key: str):
