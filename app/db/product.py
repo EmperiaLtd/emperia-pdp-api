@@ -46,12 +46,13 @@ def getParametersFromAWS(keys) -> list:
 
 
 def create_solid(org_id, market, p_key):
-    if market == "US" or market == "us":
-        string = f"{org_id}_US_{p_key}"
-    elif market == "CA" or market == "ca":
-        string = f"{org_id}_CA_{p_key}"
-    elif market == "INT" or market == "int":
-        string = f"{org_id}_INT_{p_key}"
+    if org_id == "Saxx":
+        if market == "US" or market == "us":
+            string = f"{org_id}_US_{p_key}"
+        elif market == "CA" or market == "ca":
+            string = f"{org_id}_CA_{p_key}"
+        elif market == "INT" or market == "int":
+            string = f"{org_id}_INT_{p_key}"
     else:
         string = f"{org_id}_{market}_{p_key}"
     return string
