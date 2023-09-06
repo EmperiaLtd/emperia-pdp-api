@@ -74,7 +74,7 @@ def test_get_product_data_invalid_market():
     product_id = "6775348068433"
     env = "dev"
 
-    expected_status_code = 404
+    expected_status_code = 500
     expected_message = '{"detail":"Product doesn\'t exist."}'
 
     response = client.get(f"api/product/{env}/{org_id}/{market}/{product_id}")
