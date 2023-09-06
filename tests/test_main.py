@@ -75,7 +75,7 @@ def test_get_product_data_invalid_market():
     env = "dev"
 
     expected_status_code = 500
-    expected_message = '{"detail":"Product doesn\'t exist."}'
+    expected_message = '{"detail":"Invalid market details"}'
 
     response = client.get(f"api/product/{env}/{org_id}/{market}/{product_id}")
 
