@@ -3,11 +3,11 @@ output "lambda_name" {
 }
 
 output "aws_lambda_function_alias_arn" {
-  value = aws_lambda_function.emperia-pdp-lambda-function.arn
-  # value = aws_lambda_alias.pdp-lambda_alias.arn
+  # value = aws_lambda_function.emperia-pdp-lambda-function.arn
+  value = aws_lambda_alias.pdp-lambda_alias.arn
 }
 
 output "aws_lambda_function_alias_invoke_arn" {
-  value = aws_lambda_function.emperia-pdp-lambda-function.invoke_arn
-  # value = aws_lambda_alias.pdp-lambda_alias.invoke_arn
+  # value = aws_lambda_function.emperia-pdp-lambda-function.invoke_arn
+  value = aws_lambda_alias.pdp-lambda_alias.invoke_arn
 }

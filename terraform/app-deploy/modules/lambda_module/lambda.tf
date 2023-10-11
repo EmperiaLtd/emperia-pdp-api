@@ -55,7 +55,7 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
   timeout       = 30
   image_uri     = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   package_type  = "Image"
-  # publish       = true
+  publish       = true
   environment {
     variables = {
       stage_name                    = var.stage
@@ -63,23 +63,23 @@ resource "aws_lambda_function" "emperia-pdp-lambda-function" {
   }
 }
 
-# resource "aws_lambda_alias" "pdp-lambda_alias" {
-#   depends_on = [
-#     aws_lambda_function.emperia-pdp-lambda-function
-#   ]
-#   name             = "latest-alias"
-#   function_name    = aws_lambda_function.emperia-pdp-lambda-function.function_name
-#   function_version = aws_lambda_function.emperia-pdp-lambda-function.version
-# }
+resource "aws_lambda_alias" "pdp-lambda_alias" {
+  depends_on = [
+    aws_lambda_function.emperia-pdp-lambda-function
+  ]
+  name             = "latest-alias"
+  function_name    = aws_lambda_function.emperia-pdp-lambda-function.function_name
+  function_version = aws_lambda_function.emperia-pdp-lambda-function.version
+}
 
-# resource "aws_lambda_provisioned_concurrency_config" "pdp-provisioned-concurrency" {
-#   depends_on = [
-#     aws_lambda_alias.pdp-lambda_alias
-#   ]
-#   function_name                     = aws_lambda_function.emperia-pdp-lambda-function.function_name
-#   qualifier                         = aws_lambda_alias.pdp-lambda_alias.name
-#   provisioned_concurrent_executions = 1
-# }
+resource "aws_lambda_provisioned_concurrency_config" "pdp-provisioned-concurrency" {
+  depends_on = [
+    aws_lambda_alias.pdp-lambda_alias
+  ]
+  function_name                     = aws_lambda_function.emperia-pdp-lambda-function.function_name
+  qualifier                         = aws_lambda_alias.pdp-lambda_alias.name
+  provisioned_concurrent_executions = 1
+}
 
 resource "aws_cloudwatch_log_group" "emperia-pdp" {
   name = "/aws/lambda/${aws_lambda_function.emperia-pdp-lambda-function.function_name}"
