@@ -49,8 +49,6 @@ jobs:
         if: github.ref == 'refs/heads/main'
         id: deploy
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ENV_AWS_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.ENV_AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: "eu-west-2"
         run: |
           find . -name '*.pyc' -delete
