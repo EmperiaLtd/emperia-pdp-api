@@ -115,8 +115,8 @@ module "api_gateway_integration_module_ap_south_1" {
   providers = {
     aws = aws.ap-south-1
   }
-  aws_lambda_function_arn = module.lambda_module_eu_west_2.aws_lambda_function_alias_arn
+  aws_lambda_function_arn = module.lambda_module_ap_south_1.aws_lambda_function_alias_arn
   aws_lambda_function_invoke_arn = module.lambda_module_ap_south_1.aws_lambda_function_alias_invoke_arn
-  api_gateway_execution_arn = module.api_gateway_module_eu_west_2.api_gateway_execution_arn
-  api_gateway_id = module.api_gateway_module_eu_west_2.api_gateway_id
+  api_gateway_execution_arn = module.api_gateway_module_ap_south_1.api_gateway_execution_arn
+  api_gateway_id = module.api_gateway_module_ap_south_1.api_gateway_id
 }
