@@ -21,11 +21,12 @@ jobs:
       - name: run linter [flake8]
         run: flake8 .
 
-      - name: Add profile credentials to ~/.aws/credentials
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.ENV_AWS_ACCESS_KEY }}
-          aws configure set aws_secret_access_key ${{ secrets.ENV_AWS_SECRET_ACCESS_KEY }}
-          aws configure set region eu-west-2
+      - name: Configure AWS credentials from OIDC
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: "eu-west-2"
+          role-to-assume: "arn:aws:iam::601772211076:role/github-action-terraform-role"
+          role-session-name: "GitHubActionsSession"
 
       - name: Test with pytest
         run: |
